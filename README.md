@@ -1,2 +1,1 @@
-# AmplifyDirect
-DirectDial Amplify Project
+# DirectDial
