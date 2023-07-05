@@ -13,6 +13,7 @@ import {
 from 'mdb-react-ui-kit';
 import { toast, ToastContainer } from 'react-toastify';
 import { Auth } from 'aws-amplify';
+import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import iphone from '../../asset/images/iPhone.svg';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
@@ -78,7 +79,7 @@ function Login() {
                       <MDBIcon fab icon='twitter' size="sm"/>
                     </MDBBtn>
 
-                    <MDBBtn tag='button'  color='none' className='mx-3' style={{ color: '#1266f1' }}>
+                    <MDBBtn tag='button'  color='none' className='mx-3' style={{ color: '#1266f1' }} onClick={() => Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google})}>
                       <MDBIcon fab icon='google' size="sm"/>
                     </MDBBtn>
 
