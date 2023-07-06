@@ -16,7 +16,7 @@ import {
 } from "@material-tailwind/react";
  
 const TABLE_HEAD = ["From", "To", "User", "Cost", "Type", "Date&Time", ""];
- 
+
 const TABLE_ROWS = [
   {
     From: "+12094145671",
@@ -128,6 +128,7 @@ function Dashboard () {
                     </div>
                 </div>
             </div>
+            
             <div>
                 <Card className="h-full w-full">
                     <CardHeader floated={false} shadow={false} className="rounded-none">
