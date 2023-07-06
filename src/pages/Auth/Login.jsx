@@ -16,10 +16,14 @@ import { Auth } from 'aws-amplify';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import iphone from '../../asset/images/iPhone.svg';
 import './Login.css';
+import { useEffect, useState } from 'react';
+import { Amplify, Auth, Hub } from 'aws-amplify';
+import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
 
+  const [user, setUser] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigator = useNavigate();
@@ -27,6 +31,31 @@ function Login() {
     toast(text);
   }
 
+  useEffect(() => {
+    Hub.listen('auth', ({ payload: { event, data } }) => {
+      switch (event) {
+        case 'signIn':
+        case 'cognitoHostedUI':
+          getUser().then(userData => setUser(userData));
+          break;
+        case 'signOut':
+          setUser(null);
+          break;
+        case 'signIn_failure':
+        case 'cognitoHostedUI_failure':
+          console.log('Sign in failure', data);
+          break;
+      }
+    });
+
+    getUser().then(userData => setUser(userData));
+  }, []);
+
+  function getUser() {
+    return Auth.currentAuthenticatedUser()
+      .then(userData => userData)
+      .catch(() => console.log('Not signed in'));
+  }
   async function signIn(){
     try{
       console.log(email, password);
@@ -71,20 +100,20 @@ function Login() {
 
                     <p style={{ marginTop: '1rem'}}>or sign in with:</p>
 
-                    <MDBBtn tag='button' color='none' className='mx-3' style={{ color: '#1266f1' }} >
+                    <MDBBtn tag='button' color='none' className='mx-3' style={{ color: '#1266f1' }} onClick={() => Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Amazon })}>
                       <MDBIcon fab icon='amazon' size="sm"/>
                     </MDBBtn>
 
                     <MDBBtn tag='button' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                      <MDBIcon fab icon='twitter' size="sm"/>
+                      <MDBIcon fab icon='facebook' size="sm"/>
                     </MDBBtn>
 
-                    <MDBBtn tag='button'  color='none' className='mx-3' style={{ color: '#1266f1' }} onClick={() => Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google})}>
+                    <MDBBtn tag='button'  color='none' className='mx-3' style={{ color: '#1266f1' }} onClick={() => Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google })}>
                       <MDBIcon fab icon='google' size="sm"/>
                     </MDBBtn>
 
                     <MDBBtn tag='button' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                      <MDBIcon fab icon='github' size="sm"/>
+                      <MDBIcon fab icon='apple' size="sm"/>
                     </MDBBtn>
 
                   </div>
