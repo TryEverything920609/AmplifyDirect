@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   MDBBtn,
   MDBContainer,
@@ -12,12 +12,9 @@ import {
 }
 from 'mdb-react-ui-kit';
 import { toast, ToastContainer } from 'react-toastify';
-import { Auth } from 'aws-amplify';
-import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import iphone from '../../asset/images/iPhone.svg';
 import './Login.css';
-import { useEffect, useState } from 'react';
-import { Amplify, Auth, Hub } from 'aws-amplify';
+import { Auth, Hub } from 'aws-amplify';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import { useNavigate } from 'react-router-dom';
 
