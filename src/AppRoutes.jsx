@@ -40,19 +40,7 @@ Hub.listen('auth', (data) => {
     }
 });
 
-const AppRoutes = Sign ? [
-    {
-        path: '/',
-        element: <Layout/>,
-        children: [
-            {
-                path: "/dashboard",
-                element: <Dashboard/>
-            }
-        ]
-    }
-] : 
-[
+const AppRoutes = [
     {
         path: '/',
         element: <AuthLayout/>,
@@ -111,6 +99,14 @@ const AppRoutes = Sign ? [
                 path: "/setting",
                 element: <Setting/>
             },
+            {
+                path: "/profile",
+                element: <Setting/>
+            },
+            {
+                path: "/help",
+                element: <Setting/>
+            }
         ]
     }
 ]

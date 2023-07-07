@@ -15,11 +15,12 @@ import {
     ListItem,
     ListItemPrefix,
   } from "@material-tailwind/react";
-
   
-export default function Sidebar() {
+export default function Sidebar(props) {
+
+    const style = props.show ? {'--tw-translate-x': 0} : {};
     return (
-      <div className="bg-gradient-to-br from-blue-gray-800 to-blue-gray-900 -translate-x-80 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0">
+      <div style={style} className="bg-gradient-to-br from-blue-gray-800 to-blue-gray-900 -translate-x-80 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0">
         <Card className="fixed top-4 left-4 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
             <div className="mb-2 p-4">
                 <Typography variant="h5" color="blue-gray">

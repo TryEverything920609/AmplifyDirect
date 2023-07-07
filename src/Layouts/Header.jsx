@@ -1,3 +1,4 @@
+import { Auth } from "aws-amplify";
 import React from "react";
 import {
   Navbar,
@@ -16,42 +17,59 @@ import {
   UserCircleIcon,
   Square3Stack3DIcon,
   ChevronDownIcon,
-  Cog6ToothIcon,
-  InboxArrowDownIcon,
   LifebuoyIcon,
   PowerIcon,
   RocketLaunchIcon,
   Bars2Icon,
 } from "@heroicons/react/24/outline";
- 
-// profile menu component
-const profileMenuItems = [
-  {
-    label: "My Profile",
-    icon: UserCircleIcon,
-  },
-  {
-    label: "Edit Profile",
-    icon: Cog6ToothIcon,
-  },
-  {
-    label: "Inbox",
-    icon: InboxArrowDownIcon,
-  },
-  {
-    label: "Help",
-    icon: LifebuoyIcon,
-  },
-  {
-    label: "Sign Out",
-    icon: PowerIcon,
-  },
-];
- 
+import { useNavigate } from 'react-router-dom';
+
+
+
 function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const closeMenu = () => setIsMenuOpen(false);
- 
+  
+  
+  const navigator = useNavigate();
+  //Menu Action
+  const MyProfile = () => {
+    console.log("My Profile");
+    closeMenu();
+    navigator('/profile');    
+  }
+  
+  const Help = () => {
+    console.log("Help");
+    closeMenu();
+    navigator('/help');
+  }
+  
+  const signOut = () =>{
+    closeMenu();
+    Auth.signOut();
+  }
+  
+  // profile menu component
+  const profileMenuItems = [
+    {
+      label: "My Profile",
+      icon: UserCircleIcon,
+      action: MyProfile,
+    },
+    {
+      label: "Help",
+      icon: LifebuoyIcon,
+      action: Help,
+    },
+    {
+      label: "Sign Out",
+      icon: PowerIcon,
+      action: signOut,
+    },
+  ];
+  
+
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
       <MenuHandler>
@@ -76,12 +94,12 @@ function ProfileMenu() {
         </Button>
       </MenuHandler>
       <MenuList className="p-1">
-        {profileMenuItems.map(({ label, icon }, key) => {
+        {profileMenuItems.map(({ label, icon, action }, key) => {
           const isLastItem = key === profileMenuItems.length - 1;
           return (
             <MenuItem
               key={label}
-              onClick={closeMenu}
+              onClick={ () => action() }
               className={`flex items-center gap-2 rounded ${
                 isLastItem
                   ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
@@ -219,9 +237,11 @@ function NavList() {
   );
 }
  
-export default function ComplexNavbar() {
+export default function ComplexNavbar(props) {
   const [isNavOpen, setIsNavOpen] = React.useState(false);
-  const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
+  const toggleIsNavOpen = () => {
+    props.setShow(!props.show);
+  }
  
   React.useEffect(() => {
     window.addEventListener(
@@ -254,9 +274,6 @@ export default function ComplexNavbar() {
         </IconButton>
         <ProfileMenu />
       </div>
-      <MobileNav open={isNavOpen} className="overflow-scroll">
-        <NavList />
-      </MobileNav>
     </Navbar>
   );
 }

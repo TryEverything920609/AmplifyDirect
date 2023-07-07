@@ -2,12 +2,15 @@ import PermPhoneMsgSharpIcon from '@mui/icons-material/PermPhoneMsgSharp';
 import PermPhoneMsgOutlinedIcon from '@mui/icons-material/PermPhoneMsgOutlined';
 import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined';
 import VoicemailOutlinedIcon from '@mui/icons-material/VoicemailOutlined';
-import { ArrowDownTrayIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { ArrowDownTrayIcon, MagnifyingGlassIcon, ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { useState } from 'react';
+
 import {
   Card,
   CardHeader,
   Typography,
   Button,
+  ButtonGroup,
   CardBody,
   Chip,
   CardFooter,
@@ -63,6 +66,19 @@ const TABLE_ROWS = [
 
 
 function Dashboard () {
+    const [active, setActive] = useState(1);
+    const next = () => {
+        if (active === 10) return;
+     
+        setActive(active + 1);
+      };
+     
+      const prev = () => {
+        if (active === 1) return;
+     
+        setActive(active - 1);
+      };
+     
     return (
         <div className="mt-12">
             <div className = "mb-4 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
@@ -132,17 +148,17 @@ function Dashboard () {
             <div>
                 <Card className="h-full w-full">
                     <CardHeader floated={false} shadow={false} className="rounded-none">
-                    <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
+                    <div className="mb-4 flex flex-col lg:flex-row justify-between gap-8 md:items-center">
                         <div>
                             <Typography variant="h5" color="blue-gray">
                                 List of Calls Messages And Voice Mails
                             </Typography>
                         </div>
-                        <div className="flex w-full shrink-0 gap-2 md:w-max">
+                        <div className="flex flex-col md:flex-row w-full shrink-0 gap-2 md:w-max text-center items-center">
                             <div className="w-full md:w-72">
                                 <Input label="Search" icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
                             </div>
-                            <Button className="flex items-center gap-3" color="blue" size="sm">
+                            <Button className="flex items-center gap-3 max-w-sm w-1/2" color="blue" size="sm">
                                 <ArrowDownTrayIcon strokeWidth={2} className="h-4 w-4" /> Download
                             </Button>
                         </div>
@@ -220,36 +236,62 @@ function Dashboard () {
                         </tbody>
                     </table>
                     </CardBody>
-                    <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                    <Button variant="outlined" color="blue-gray" size="sm">
-                        Previous
-                    </Button>
-                    <div className="flex items-center gap-2">
-                        <IconButton variant="outlined" color="blue-gray" size="sm">
-                        1
-                        </IconButton>
-                        <IconButton variant="text" color="blue-gray" size="sm">
-                        2
-                        </IconButton>
-                        <IconButton variant="text" color="blue-gray" size="sm">
-                        3
-                        </IconButton>
-                        <IconButton variant="text" color="blue-gray" size="sm">
-                        ...
-                        </IconButton>
-                        <IconButton variant="text" color="blue-gray" size="sm">
-                        8
-                        </IconButton>
-                        <IconButton variant="text" color="blue-gray" size="sm">
-                        9
-                        </IconButton>
-                        <IconButton variant="text" color="blue-gray" size="sm">
-                        10
-                        </IconButton>
-                    </div>
-                    <Button variant="outlined" color="blue-gray" size="sm">
-                        Next
-                    </Button>
+                    <CardFooter className="hidden lg:flex items-center justify-between border-t border-blue-gray-50 p-4 ">
+                        <Button variant="outlined" color="blue-gray" size="sm">
+                            Previous
+                        </Button>
+                        <div className="flex items-center gap-2">
+                            <IconButton variant="outlined" color="blue-gray" size="sm">
+                            1
+                            </IconButton>
+                            <IconButton variant="text" color="blue-gray" size="sm">
+                            2
+                            </IconButton>
+                            <IconButton variant="text" color="blue-gray" size="sm">
+                            3
+                            </IconButton>
+                            <IconButton variant="text" color="blue-gray" size="sm">
+                            ...
+                            </IconButton>
+                            <IconButton variant="text" color="blue-gray" size="sm">
+                            8
+                            </IconButton>
+                            <IconButton variant="text" color="blue-gray" size="sm">
+                            9
+                            </IconButton>
+                            <IconButton variant="text" color="blue-gray" size="sm">
+                            10
+                            </IconButton>
+                        </div>
+                        <Button variant="outlined" color="blue-gray" size="sm">
+                            Next
+                        </Button>
+                    </CardFooter>
+                    <CardFooter className="w-full flex lg:hidden flex-row justify-center items-center  border-t border-blue-gray-50 p-4 ">
+                        <div className="flex items-center gap-8">
+                            <IconButton
+                            size="sm"
+                            variant="outlined"
+                            color="blue-gray"
+                            onClick={prev}
+                            disabled={active === 1}
+                            >
+                            <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
+                            </IconButton>
+                            <Typography color="gray" className="font-normal">
+                            Page <strong className="text-blue-gray-900">{active}</strong> of{" "}
+                            <strong className="text-blue-gray-900">10</strong>
+                            </Typography>
+                            <IconButton
+                            size="sm"
+                            variant="outlined"
+                            color="blue-gray"
+                            onClick={next}
+                            disabled={active === 10}
+                            >
+                            <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+                            </IconButton>
+                        </div>
                     </CardFooter>
                 </Card>
             </div>
