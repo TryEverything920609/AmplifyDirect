@@ -6,7 +6,7 @@ const websiteViewsChart = {
   series: [
     {
       name: "Views",
-      data: [50, 20, 10, 22, 50, 10, 40],
+      data: [50, 20, 10, 22, 50, 10, 40, 45, 60],
     },
   ],
   options: {
@@ -20,7 +20,15 @@ const websiteViewsChart = {
     },
     xaxis: {
       ...chartsConfig.xaxis,
-      categories: ["M", "T", "W", "T", "F", "S", "S"],
+      categories: ["Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",],
     },
   },
 };
@@ -30,7 +38,7 @@ const dailySalesChart = {
   height: 220,
   series: [
     {
-      name: "Sales",
+      name: "User",
       data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
     },
   ],
@@ -64,7 +72,7 @@ const completedTasksChart = {
   ...dailySalesChart,
   series: [
     {
-      name: "Tasks",
+      name: "Billing",
       data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
     },
   ],
@@ -80,15 +88,15 @@ export const statisticsChartsData = [
   },
   {
     color: "pink",
-    title: "Daily Sales",
-    description: "15% increase in today sales",
+    title: "Daily User",
+    description: "15% increase in today User",
     footer: "updated 4 min ago",
     chart: dailySalesChart,
   },
   {
     color: "green",
-    title: "Completed Tasks",
-    description: "Last Campaign Performance",
+    title: "Monthly Billing",
+    description: "Billing",
     footer: "just updated",
     chart: completedTasksChart,
   },

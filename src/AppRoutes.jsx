@@ -13,6 +13,7 @@ import CallLog from "./pages/Services/CallLog";
 import Billing from "./pages/Services/Billing";
 import WebForm from "./pages/Services/WebForm";
 import Setting from "./pages/Services/Setting";
+import Profile from './pages/Services/Profile';
 
 let Sign = false;
 
@@ -101,7 +102,7 @@ const AppRoutes = [
             },
             {
                 path: "/profile",
-                element: <Setting/>
+                element: <Profile/>
             },
             {
                 path: "/help",
