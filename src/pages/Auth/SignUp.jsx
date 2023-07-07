@@ -94,20 +94,20 @@ function SignUp() {
 
                     <p>or sign in with:</p>
 
-                    <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
+                    <MDBBtn tag='button' color='none' className='mx-3' style={{ color: '#1266f1' }} onClick={() => Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Amazon })}>
                       <MDBIcon fab icon='amazon' size="sm"/>
                     </MDBBtn>
 
-                    <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                      <MDBIcon fab icon='twitter' size="sm"/>
+                    <MDBBtn tag='button' color='none' className='mx-3' style={{ color: '#1266f1' }}>
+                      <MDBIcon fab icon='facebook' size="sm"/>
                     </MDBBtn>
 
-                    <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }} href={ googleOauthUrl }>
+                    <MDBBtn tag='button'  color='none' className='mx-3' style={{ color: '#1266f1' }} onClick={() => Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google })}>
                       <MDBIcon fab icon='google' size="sm"/>
                     </MDBBtn>
 
-                    <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                      <MDBIcon fab icon='github' size="sm"/>
+                    <MDBBtn tag='button' color='none' className='mx-3' style={{ color: '#1266f1' }}>
+                      <MDBIcon fab icon='apple' size="sm"/>
                     </MDBBtn>
 
                   </div>
