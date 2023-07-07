@@ -1,4 +1,4 @@
-import { ArrowDownTrayIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { ArrowDownTrayIcon, MagnifyingGlassIcon, ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import {
   Card,
   CardHeader,
@@ -7,10 +7,9 @@ import {
   CardBody,
   CardFooter,
   IconButton,
-  Switch,
   Input,
 } from "@material-tailwind/react";
- 
+import { useState } from "react";
 const TABLE_HEAD = ["No", "State Name", "Area Code", ""];
  
 const TABLE_ROWS = [
@@ -47,6 +46,18 @@ const TABLE_ROWS = [
 ];
  
 export default function States() {
+    const [active, setActive] = useState(1);
+    const next = () => {
+        if (active === 10) return;
+        
+        setActive(active + 1);
+        };
+        
+        const prev = () => {
+        if (active === 1) return;
+        
+        setActive(active - 1);
+        };
   return (
     <Card className="h-full w-full">
         <CardHeader floated={false} shadow={false} className="rounded-none">
