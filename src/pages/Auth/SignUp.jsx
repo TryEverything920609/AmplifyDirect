@@ -24,7 +24,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import iphone from '../../asset/images/iPhone.svg';
 import './Login.css';
-
+import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 
 function SignUp() {
 
