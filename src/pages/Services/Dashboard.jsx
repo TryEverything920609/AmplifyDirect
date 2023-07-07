@@ -1,8 +1,10 @@
+import { StatisticsChart } from './../../components/charts/statistics-chart';
+import { statisticsChartsData } from '../../config/statisticsChartData'; 
 import PermPhoneMsgSharpIcon from '@mui/icons-material/PermPhoneMsgSharp';
 import PermPhoneMsgOutlinedIcon from '@mui/icons-material/PermPhoneMsgOutlined';
 import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined';
 import VoicemailOutlinedIcon from '@mui/icons-material/VoicemailOutlined';
-import { ArrowDownTrayIcon, MagnifyingGlassIcon, ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { ArrowDownTrayIcon, MagnifyingGlassIcon, ArrowRightIcon, ArrowLeftIcon, ClockIcon } from "@heroicons/react/24/outline";
 import { useState } from 'react';
 
 import {
@@ -63,8 +65,6 @@ const TABLE_ROWS = [
   },
 ];
 
-
-
 function Dashboard () {
     const [active, setActive] = useState(1);
     const next = () => {
@@ -81,7 +81,7 @@ function Dashboard () {
      
     return (
         <div className="mt-12">
-            <div className = "mb-4 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
+            <div className = "mb-8 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4 ">
                 <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
                     <div className="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
                         <PermPhoneMsgSharpIcon/>
@@ -144,7 +144,23 @@ function Dashboard () {
                     </div>
                 </div>
             </div>
-            
+            <div className='mb-6 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3'>
+                {statisticsChartsData.map((props) => (
+                    <StatisticsChart
+                    key={props.title}
+                    {...props}
+                    footer={
+                        <Typography
+                        variant="small"
+                        className="flex items-center font-normal text-blue-gray-600"
+                        >
+                        <ClockIcon strokeWidth={2} className="h-4 w-4 text-inherit" />
+                        &nbsp;{props.footer}
+                        </Typography>
+                    }
+                    />
+                ))}
+            </div>
             <div>
                 <Card className="h-full w-full">
                     <CardHeader floated={false} shadow={false} className="rounded-none">
