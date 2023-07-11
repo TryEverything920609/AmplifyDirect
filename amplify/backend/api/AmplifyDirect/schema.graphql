@@ -1,0 +1,28 @@
+type FreeNumberList @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Number: AWSPhone
+  Active: Boolean!
+}
+
+enum ServiceStatus {
+  DELIVERD
+  COMPLETED
+  NOANSWER
+}
+
+enum ServiceType {
+  SMS
+  VOICEMAIL
+  CALL
+}
+
+type ServiceList @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  From: AWSPhone
+  To: AWSPhone
+  Username: String
+  Type: ServiceType
+  Status: ServiceStatus
+  Cost: Float
+}
+ 

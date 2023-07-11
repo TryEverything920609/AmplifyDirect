@@ -27,8 +27,6 @@ import './Login.css';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 
 function SignUp() {
-
-  const googleOauthUrl = 'https://directdial.auth.us-east-1.amazoncognito.com/oauth2/authorize?client_id=5cib1l1iq251m1vhjpk4abj4ha&response_type=token&scope=email+openid+profile&redirect_uri=https%3A%2F%2Fmain.d2wkzq2wyfkbd2.amplifyapp.com%2Fdashboard';
   const navigator = useNavigate();
   const [showConfirm, setShowConfirm] = useState(false);
   const [email, setEmail] = useState('');

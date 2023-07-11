@@ -8,6 +8,7 @@ import awsConfig from './aws-exports';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@material-tailwind/react';
+import { AmplifyProvider } from '@aws-amplify/ui-react';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -48,7 +49,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider>
-        <App />
+        <AmplifyProvider>
+          <App />
+        </AmplifyProvider>
       </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>
