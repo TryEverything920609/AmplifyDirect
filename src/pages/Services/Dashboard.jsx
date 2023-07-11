@@ -29,7 +29,7 @@ function Dashboard () {
                 sortDescFirst: false,
                 enableClickToCopy: true,
                 muiTableBodyCellCopyButtonProps: {
-                    fullwidth: true,
+                    fullwidth: "true",
                     startIcon: <ContentCopy/>,
                     sx: { justifyContent: 'flex-start'}
                 }
@@ -40,7 +40,7 @@ function Dashboard () {
                 sortDescFirst: false,
                 enableClickToCopy: true,
                 muiTableBodyCellCopyButtonProps: {
-                    fullwidth: true,
+                    fullwidth: "true",
                     startIcon: <ContentCopy/>,
                     sx: { justifyContent: 'flex-start'}
                 },
@@ -51,7 +51,7 @@ function Dashboard () {
                 sortDescFirst: false,
                 enableClickToCopy: true,
                 muiTableBodyCellCopyButtonProps: {
-                    fullwidth: true,
+                    fullwidth: "true",
                     startIcon: <ContentCopy/>,
                     sx: { justifyContent: 'flex-start'}
                 }
@@ -59,7 +59,7 @@ function Dashboard () {
             {
                 accessorKey: "Cost",
                 header: "Cost",
-                sortDescFirst: false
+                sortDescFirst: false,
             },
             {
                 accessorKey: "Type",
@@ -81,14 +81,17 @@ function Dashboard () {
     );
     
     const [TableData, SetTableData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     async function getTableData(){
         const models = await DataStore.query(ServiceList);
+        setLoading(false);
         SetTableData(models);
         console.log(TableData);
     }
      
     useEffect(() => {
+        setLoading(true);
         getTableData();
     }, []);
 
@@ -188,7 +191,7 @@ function Dashboard () {
                     <CardBody className="overflow-scroll px-0">
                         <MaterialReactTable
                             columns={columns}
-                            data={TableData}
+                            data={TableData ?? []}
                             isMultiSortEvent={() => true}
                             maxMultiSortColCount={3}
                             enableRowNumbers
@@ -197,6 +200,7 @@ function Dashboard () {
                                     Clear All Sorting
                                 </Button>
                             )}
+                            state={{ isLoading: loading }}
                         />
                     </CardBody>
                 </Card>

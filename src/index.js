@@ -11,6 +11,7 @@ import { ThemeProvider } from '@material-tailwind/react';
 import { AmplifyProvider } from '@aws-amplify/ui-react';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'antd/dist/reset.css';
 
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||

@@ -19,3 +19,11 @@ code {
 p {
   margin-bottom: 0 !important;
 }
+
+td.ant-table-cell {
+  text-align: center;
+}
+
+span.ant-table-column-title{
+  text-align: center !important;
+}
