@@ -1,15 +1,16 @@
-import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import {
   Card,
   CardHeader,
   Typography,
   Button,
   CardBody,
+  Input
 } from "@material-tailwind/react";
 import { CheckOutlined, CloseOutlined } from "@mui/icons-material";
 import { useMemo, useEffect, useState } from "react";
 import { DataStore } from "aws-amplify";
-import { Table, Switch, Space, Modal, Form, Input } from "antd";
+import { Table, Switch, Space, Modal, Form } from "antd";
 import { FreeNumberList } from "../../models";
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { toast, ToastContainer } from 'react-toastify';
@@ -73,6 +74,8 @@ export default function TollFreeNumber() {
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [id, setId] = useState('');
   const [active, setActive] = useState(false);
+  const [search, setSearch] = useState('');
+  const [searchData, setSearchData] = useState([]);
 
   async function getTableData(){
     const models = await DataStore.query(FreeNumberList);
@@ -101,12 +104,21 @@ export default function TollFreeNumber() {
     setIsModalOpen1(false);
   };
 
+  const handleSearch = (value) => {
+    setSearch(value);
+  }
+
   useEffect(() => {
     setLoading(true);
     getTableData();
   }, []);
 
-
+  useEffect(() => {
+    const data = TableData.filter((item) => 
+      Object.values(item).some((value) => value && value.toString().toLowerCase().includes(search.toLowerCase()))
+    );
+    setSearchData(data);
+  }, [search]);
   return (
     <>
       <Card className="h-full w-full">
@@ -117,16 +129,22 @@ export default function TollFreeNumber() {
                 Toll Free Number
               </Typography>
             </div>
-            <div className="flex w-full shrink-0 gap-2 md:w-max">
-              <Button className="flex items-center gap-3" onClick={() => setIsModalOpen2(true)} color="blue" size="sm">
-                <ArrowDownTrayIcon strokeWidth={2} className="h-4 w-4" /> Add Number
-              </Button>
-            </div>
+            <div className="flex flex-col md:flex-row w-full shrink-0 gap-2 md:w-max text-center items-center">
+                    <div className="w-full md:w-72">
+                        <Input label="Search" value={search} onChange={(e) => handleSearch(e.target.value)} icon={<MagnifyingGlassIcon className="h-5 w-5" />}/>
+                    </div>
+                    <Button className="flex items-center gap-3 max-w-sm w-1/2" color="blue" size="sm" onClick={() => setIsModalOpen2(true)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        Add AreaCode
+                    </Button>
+                </div>
           </div>
         </CardHeader>
         <CardBody className="overflow-scroll px-0">
           <Table
-            columns={columns} dataSource={TableData} size="middle"
+            columns={columns} dataSource={search ? searchData : TableData} size="middle"
           />
         </CardBody>
       </Card>

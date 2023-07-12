@@ -14,9 +14,10 @@ const ServiceType = {
   "CALL": "CALL"
 };
 
-const { FreeNumberList, ServiceList } = initSchema(schema);
+const { StateCodeList, FreeNumberList, ServiceList } = initSchema(schema);
 
 export {
+  StateCodeList,
   FreeNumberList,
   ServiceList,
   ServiceStatus,

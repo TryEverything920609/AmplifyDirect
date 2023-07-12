@@ -1,3 +1,9 @@
+type StateCodeList @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  StateName: String
+  AreaCode: [String]
+}
+
 type FreeNumberList @model @auth(rules: [{allow: public}]) {
   id: ID!
   Number: AWSPhone

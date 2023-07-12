@@ -21,7 +21,11 @@ p {
 }
 
 td.ant-table-cell {
-  text-align: center;
+  text-align: center !important;
+}
+
+th.ant-table-cell {
+  text-align: center !important;
 }
 
 span.ant-table-column-title{

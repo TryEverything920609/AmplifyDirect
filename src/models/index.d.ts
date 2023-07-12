@@ -16,6 +16,36 @@ export enum ServiceType {
 
 
 
+type EagerStateCodeList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<StateCodeList, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly StateName?: string | null;
+  readonly AreaCode?: (string | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyStateCodeList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<StateCodeList, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly StateName?: string | null;
+  readonly AreaCode?: (string | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type StateCodeList = LazyLoading extends LazyLoadingDisabled ? EagerStateCodeList : LazyStateCodeList
+
+export declare const StateCodeList: (new (init: ModelInit<StateCodeList>) => StateCodeList) & {
+  copyOf(source: StateCodeList, mutator: (draft: MutableModel<StateCodeList>) => MutableModel<StateCodeList> | void): StateCodeList;
+}
+
 type EagerFreeNumberList = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<FreeNumberList, 'id'>;
