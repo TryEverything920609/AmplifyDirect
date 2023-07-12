@@ -46,7 +46,7 @@ export default function States() {
                 title: "Option",
                 render: (_, record) => <>
                     <EditOutlinedIcon color="primary" onClick={() => editRow(record.id, record.StateName, record.AreaCode)}/>
-                    <DeleteOutlinedIcon color="primary" onClick={() => deleteRow(record.id, record.StateName, record.AreaCode)}/>
+                    <DeleteOutlinedIcon color="primary" onClick={() => deleteRow(record.id, record.StateName)}/>
                 </>
             }
         ]
@@ -63,28 +63,82 @@ export default function States() {
     const [Id, setId] = useState('');
 
     const editRow = (id, StateName, AreaCode) => {
-        console.log(id);
-        const newString = AreaCode.join(', ');
-        console.log(newString);
+        const newString = AreaCode.join(',');
+        setAreacode(newString);
+        setState(StateName);
+        setId(id);
+        setIsEditModalOpen(true);
     }
 
-    const deleteRow = (id, StateName, AreaCode) => {
-        console.log(id);    
+    async function EditOk(){
+        try{
+            const original = await DataStore.query(StateCodeList, Id);
+            const separatedArray = areacode.split(',');
+            await DataStore.save(
+                StateCodeList.copyOf(original, updated => {
+                    updated.StateName = state;
+                    updated.AreaCode = separatedArray;
+                })
+            );
+            getTableData();
+            notify("Edit Success");
+        }catch(err){
+            notify("Edit Failed");
+        }
+        setId('');
+        setState('');
+        setIsEditModalOpen(false);
+    }
+
+    async function EditCancel(){
+        setId('');
+        setState('');
+        setIsEditModalOpen(false);
+    }
+
+    const deleteRow = (id, StateName) => {
+        setId(id);
+        setState(StateName);
+        setDeleteModalOpen(true);   
+    }
+
+    async function DeleteOk(){
+        try{
+            const deleteObject = await DataStore.query(StateCodeList, Id);
+            DataStore.delete(deleteObject);
+            getTableData();
+            notify("Delete Seccess");
+        }catch(err){
+            notify("Delete failed");
+        }
+        setId('');
+        setState('');
+        setDeleteModalOpen(false);
+    }
+
+    async function DeleteCancel(){
+        setId('');
+        setState('');
+        setDeleteModalOpen(false);
     }
 
     async function handleOk(){
         setIsModalOpen(false);
         if(areacode && state){
-            const separatedArray = areacode.split(',');
-            await DataStore.save(
-                new StateCodeList({
-                    "StateName": state,
-                    "AreaCode": separatedArray
-                })
-            );
+            try{
+                const separatedArray = areacode.split(',');
+                await DataStore.save(
+                    new StateCodeList({
+                        "StateName": state,
+                        "AreaCode": separatedArray
+                    })
+                );
 
-            getTableData();
-            notify('Add Areacode Success');
+                getTableData();
+                notify('Add Areacode Success');
+            }catch(err){
+                notify("Add Failed");
+            }
         }
         else{
             notify('Please Enter StateName and Areacode');
@@ -109,16 +163,14 @@ export default function States() {
     }
 
     function handleSearch(value){
-        console.log(value, 'hello');
         setSearch(value);
     }
 
     useEffect(()=>{
      setData();
-    },[search]);
+    },[search, tableData]);
 
     const setData = () => {
-        console.log('Hello', search);
         const data = tableData.filter((item) => 
             Object.values(item).some((value) => value && value.toString().toLowerCase().includes(search.toLowerCase())));
         setSearchData(data);
@@ -163,6 +215,20 @@ export default function States() {
                     </Form.Item>
                 </Form>
             </Modal>
+            <Modal title="Edit State Areacode" open={isEditModalOpen} onOk={EditOk} onCancel= {EditCancel} okButtonProps={{ style: { backgroundColor: '#1677ff' }}}>
+                <Form>
+                    <Form.Item label = "StateName">
+                        <Input placeholder="Please Enter StateName" value={state} onChange={(e) => setState(e.target.value)}/>
+                    </Form.Item>
+                    <Form.Item label = "Area Code Ex :- 123,456,789">
+                        <Input placeholder="Please Enter Areacode" value={areacode} onChange={(e) => {setAreacode(e.target.value)}}/>
+                    </Form.Item>
+                </Form>
+            </Modal>
+
+            <Modal title={`Delete State Areacode ${state}`} open={isDeleteModalOpen} onOk={DeleteOk} onCancel= {DeleteCancel} okButtonProps={{ style: { backgroundColor: '#1677ff' }}}>
+            </Modal>
+            
             <ToastContainer/>
         </Card>
     );

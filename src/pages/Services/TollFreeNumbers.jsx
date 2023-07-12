@@ -19,26 +19,35 @@ import { toast, ToastContainer } from 'react-toastify';
 export default function TollFreeNumber() {
 
   async function UpdateNumber(id, Active){
-    console.log(id, Active, 'hel');
-    const original = await DataStore.query(FreeNumberList, id);
-    const update = await DataStore.save(
-      FreeNumberList.copyOf(original, updated => {
-        updated.Active = Active;
-      })
-    );
-    getTableData();
+    try{
+      const original = await DataStore.query(FreeNumberList, id);
+      const update = await DataStore.save(
+        FreeNumberList.copyOf(original, updated => {
+          updated.Active = Active;
+        })
+      );
+      getTableData();
+      notify("Update Success");
+    }catch(err){
+      notify("Update Failed")
+    }
   }
 
   async function AddNumber(){
     const phonenumber = parsePhoneNumber(number);
     if(phonenumber){
-      await DataStore.save(
-        new FreeNumberList({
-          "Number" : phonenumber.number,
-          "Active": false
-        })
-      );
-      getTableData();
+      try{
+        await DataStore.save(
+          new FreeNumberList({
+            "Number" : phonenumber.number,
+            "Active": false
+          })
+        );
+        getTableData();
+        notify("Add PhoneNumber Success");
+      }catch(err){
+        notify("Add PhoneNumber Failed");
+      }
     }else{
       notify('Please check phonenumber');
     }
@@ -118,7 +127,7 @@ export default function TollFreeNumber() {
       Object.values(item).some((value) => value && value.toString().toLowerCase().includes(search.toLowerCase()))
     );
     setSearchData(data);
-  }, [search]);
+  }, [search, TableData]);
   return (
     <>
       <Card className="h-full w-full">

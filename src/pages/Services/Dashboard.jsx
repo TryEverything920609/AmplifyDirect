@@ -87,7 +87,6 @@ function Dashboard () {
         const models = await DataStore.query(ServiceList);
         setLoading(false);
         SetTableData(models);
-        console.log(TableData);
     }
      
     useEffect(() => {
