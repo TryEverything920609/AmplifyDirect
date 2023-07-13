@@ -12,7 +12,8 @@ const ServiceStatus = {
 const ServiceType = {
   "SMS": "SMS",
   "VOICEMAIL": "VOICEMAIL",
-  "CALL": "CALL"
+  "CALL": "CALL",
+  "DEPOSIT": "DEPOSIT"
 };
 
 const { BillingList, CallLogList, SMSlogList, BusinessUserList, StateCodeList, FreeNumberList, ServiceList, BusinessUserListFreeNumberList, BusinessUserListStateCodeList } = initSchema(schema);

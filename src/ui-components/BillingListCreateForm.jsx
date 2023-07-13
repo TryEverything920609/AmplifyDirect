@@ -196,6 +196,11 @@ export default function BillingListCreateForm(props) {
           value="CALL"
           {...getOverrideProps(overrides, "Typeoption2")}
         ></option>
+        <option
+          children="Deposit"
+          value="DEPOSIT"
+          {...getOverrideProps(overrides, "Typeoption3")}
+        ></option>
       </SelectField>
       <TextField
         label="Duration"

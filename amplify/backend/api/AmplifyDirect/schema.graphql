@@ -65,6 +65,7 @@ enum ServiceType {
   SMS
   VOICEMAIL
   CALL
+  DEPOSIT
 }
 
 type ServiceList @model @auth(rules: [{allow: public}]) {

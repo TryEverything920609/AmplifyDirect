@@ -12,7 +12,8 @@ export enum ServiceStatus {
 export enum ServiceType {
   SMS = "SMS",
   VOICEMAIL = "VOICEMAIL",
-  CALL = "CALL"
+  CALL = "CALL",
+  DEPOSIT = "DEPOSIT"
 }
 
 

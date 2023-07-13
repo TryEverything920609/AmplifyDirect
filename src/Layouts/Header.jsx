@@ -23,8 +23,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { useNavigate } from 'react-router-dom';
 
-
-
 function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const closeMenu = () => setIsMenuOpen(false);

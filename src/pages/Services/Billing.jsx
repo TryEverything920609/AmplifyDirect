@@ -25,7 +25,7 @@ export default function Billing() {
       {
         title: "Type",
         dataIndex: "Type",
-        sorter: (a, b) => a.Type-b.Type,
+        sorter: (a, b) => a.Type.localeCompare(b.Type),
         sortDirections: ['ascend', 'descend'],
         render: (Type) => Type === "SMS" ? <span><Tag color="red">SMS</Tag></span> : Type === "VOICEMAIL" ? <span><Tag color="cyan">VOICEMAIL</Tag></span> : Type === "CALL" ? <span><Tag color="purple">CALL</Tag></span> : <span><Tag color="purple">Deposit</Tag></span>
       },

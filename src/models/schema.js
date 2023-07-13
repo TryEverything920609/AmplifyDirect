@@ -889,7 +889,8 @@ export const schema = {
             "values": [
                 "SMS",
                 "VOICEMAIL",
-                "CALL"
+                "CALL",
+                "DEPOSIT"
             ]
         }
     },

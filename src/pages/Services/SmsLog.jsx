@@ -43,8 +43,9 @@ export default function SmsLog() {
       {
         title: "Cost",
         dataIndex: "Cost",
-        sorter: (a, b) => a.Cost.localeCompare(b.Cost),
-        sortDirections: ['ascend', 'descend']
+        sorter: (a, b) => a.Cost-b.Cost,
+        sortDirections: ['ascend', 'descend'],
+        render: (Cost) => <span><Tag color="magenta">-{Cost}</Tag></span>
       },
       {
         title: "Date&Time",
