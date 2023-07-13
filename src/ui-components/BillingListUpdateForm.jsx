@@ -14,12 +14,13 @@ import {
   TextField,
 } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { ServiceList } from "../models";
+import { BillingList } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function ServiceListCreateForm(props) {
+export default function BillingListUpdateForm(props) {
   const {
-    clearOnSuccess = true,
+    id: idProp,
+    billingList: billingListModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -29,35 +30,42 @@ export default function ServiceListCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    From: "",
-    To: "",
-    Username: "",
+    User: "",
     Type: "",
-    Status: "",
+    Duration: "",
     Cost: "",
   };
-  const [From, setFrom] = React.useState(initialValues.From);
-  const [To, setTo] = React.useState(initialValues.To);
-  const [Username, setUsername] = React.useState(initialValues.Username);
+  const [User, setUser] = React.useState(initialValues.User);
   const [Type, setType] = React.useState(initialValues.Type);
-  const [Status, setStatus] = React.useState(initialValues.Status);
+  const [Duration, setDuration] = React.useState(initialValues.Duration);
   const [Cost, setCost] = React.useState(initialValues.Cost);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setFrom(initialValues.From);
-    setTo(initialValues.To);
-    setUsername(initialValues.Username);
-    setType(initialValues.Type);
-    setStatus(initialValues.Status);
-    setCost(initialValues.Cost);
+    const cleanValues = billingListRecord
+      ? { ...initialValues, ...billingListRecord }
+      : initialValues;
+    setUser(cleanValues.User);
+    setType(cleanValues.Type);
+    setDuration(cleanValues.Duration);
+    setCost(cleanValues.Cost);
     setErrors({});
   };
+  const [billingListRecord, setBillingListRecord] =
+    React.useState(billingListModelProp);
+  React.useEffect(() => {
+    const queryData = async () => {
+      const record = idProp
+        ? await DataStore.query(BillingList, idProp)
+        : billingListModelProp;
+      setBillingListRecord(record);
+    };
+    queryData();
+  }, [idProp, billingListModelProp]);
+  React.useEffect(resetStateValues, [billingListRecord]);
   const validations = {
-    From: [{ type: "Phone" }],
-    To: [{ type: "Phone" }],
-    Username: [],
+    User: [],
     Type: [],
-    Status: [],
+    Duration: [],
     Cost: [],
   };
   const runValidationTasks = async (
@@ -86,11 +94,9 @@ export default function ServiceListCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          From,
-          To,
-          Username,
+          User,
           Type,
-          Status,
+          Duration,
           Cost,
         };
         const validationResponses = await Promise.all(
@@ -121,12 +127,13 @@ export default function ServiceListCreateForm(props) {
               modelFields[key] = undefined;
             }
           });
-          await DataStore.save(new ServiceList(modelFields));
+          await DataStore.save(
+            BillingList.copyOf(billingListRecord, (updated) => {
+              Object.assign(updated, modelFields);
+            })
+          );
           if (onSuccess) {
             onSuccess(modelFields);
-          }
-          if (clearOnSuccess) {
-            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -134,97 +141,35 @@ export default function ServiceListCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "ServiceListCreateForm")}
+      {...getOverrideProps(overrides, "BillingListUpdateForm")}
       {...rest}
     >
       <TextField
-        label="From"
+        label="User"
         isRequired={false}
         isReadOnly={false}
-        type="tel"
-        value={From}
+        value={User}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              From: value,
-              To,
-              Username,
+              User: value,
               Type,
-              Status,
+              Duration,
               Cost,
             };
             const result = onChange(modelFields);
-            value = result?.From ?? value;
+            value = result?.User ?? value;
           }
-          if (errors.From?.hasError) {
-            runValidationTasks("From", value);
+          if (errors.User?.hasError) {
+            runValidationTasks("User", value);
           }
-          setFrom(value);
+          setUser(value);
         }}
-        onBlur={() => runValidationTasks("From", From)}
-        errorMessage={errors.From?.errorMessage}
-        hasError={errors.From?.hasError}
-        {...getOverrideProps(overrides, "From")}
-      ></TextField>
-      <TextField
-        label="To"
-        isRequired={false}
-        isReadOnly={false}
-        type="tel"
-        value={To}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              From,
-              To: value,
-              Username,
-              Type,
-              Status,
-              Cost,
-            };
-            const result = onChange(modelFields);
-            value = result?.To ?? value;
-          }
-          if (errors.To?.hasError) {
-            runValidationTasks("To", value);
-          }
-          setTo(value);
-        }}
-        onBlur={() => runValidationTasks("To", To)}
-        errorMessage={errors.To?.errorMessage}
-        hasError={errors.To?.hasError}
-        {...getOverrideProps(overrides, "To")}
-      ></TextField>
-      <TextField
-        label="Username"
-        isRequired={false}
-        isReadOnly={false}
-        value={Username}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              From,
-              To,
-              Username: value,
-              Type,
-              Status,
-              Cost,
-            };
-            const result = onChange(modelFields);
-            value = result?.Username ?? value;
-          }
-          if (errors.Username?.hasError) {
-            runValidationTasks("Username", value);
-          }
-          setUsername(value);
-        }}
-        onBlur={() => runValidationTasks("Username", Username)}
-        errorMessage={errors.Username?.errorMessage}
-        hasError={errors.Username?.hasError}
-        {...getOverrideProps(overrides, "Username")}
+        onBlur={() => runValidationTasks("User", User)}
+        errorMessage={errors.User?.errorMessage}
+        hasError={errors.User?.hasError}
+        {...getOverrideProps(overrides, "User")}
       ></TextField>
       <SelectField
         label="Type"
@@ -235,11 +180,9 @@ export default function ServiceListCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              From,
-              To,
-              Username,
+              User,
               Type: value,
-              Status,
+              Duration,
               Cost,
             };
             const result = onChange(modelFields);
@@ -271,56 +214,37 @@ export default function ServiceListCreateForm(props) {
           {...getOverrideProps(overrides, "Typeoption2")}
         ></option>
       </SelectField>
-      <SelectField
-        label="Status"
-        placeholder="Please select an option"
-        isDisabled={false}
-        value={Status}
+      <TextField
+        label="Duration"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={Duration}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
           if (onChange) {
             const modelFields = {
-              From,
-              To,
-              Username,
+              User,
               Type,
-              Status: value,
+              Duration: value,
               Cost,
             };
             const result = onChange(modelFields);
-            value = result?.Status ?? value;
+            value = result?.Duration ?? value;
           }
-          if (errors.Status?.hasError) {
-            runValidationTasks("Status", value);
+          if (errors.Duration?.hasError) {
+            runValidationTasks("Duration", value);
           }
-          setStatus(value);
+          setDuration(value);
         }}
-        onBlur={() => runValidationTasks("Status", Status)}
-        errorMessage={errors.Status?.errorMessage}
-        hasError={errors.Status?.hasError}
-        {...getOverrideProps(overrides, "Status")}
-      >
-        <option
-          children="Deliverd"
-          value="DELIVERD"
-          {...getOverrideProps(overrides, "Statusoption0")}
-        ></option>
-        <option
-          children="Completed"
-          value="COMPLETED"
-          {...getOverrideProps(overrides, "Statusoption1")}
-        ></option>
-        <option
-          children="Noanswer"
-          value="NOANSWER"
-          {...getOverrideProps(overrides, "Statusoption2")}
-        ></option>
-        <option
-          children="Ringing"
-          value="RINGING"
-          {...getOverrideProps(overrides, "Statusoption3")}
-        ></option>
-      </SelectField>
+        onBlur={() => runValidationTasks("Duration", Duration)}
+        errorMessage={errors.Duration?.errorMessage}
+        hasError={errors.Duration?.hasError}
+        {...getOverrideProps(overrides, "Duration")}
+      ></TextField>
       <TextField
         label="Cost"
         isRequired={false}
@@ -334,11 +258,9 @@ export default function ServiceListCreateForm(props) {
             : parseFloat(e.target.value);
           if (onChange) {
             const modelFields = {
-              From,
-              To,
-              Username,
+              User,
               Type,
-              Status,
+              Duration,
               Cost: value,
             };
             const result = onChange(modelFields);
@@ -359,13 +281,14 @@ export default function ServiceListCreateForm(props) {
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Clear"
+          children="Reset"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          {...getOverrideProps(overrides, "ClearButton")}
+          isDisabled={!(idProp || billingListModelProp)}
+          {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -375,7 +298,10 @@ export default function ServiceListCreateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={Object.values(errors).some((e) => e?.hasError)}
+            isDisabled={
+              !(idProp || billingListModelProp) ||
+              Object.values(errors).some((e) => e?.hasError)
+            }
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>

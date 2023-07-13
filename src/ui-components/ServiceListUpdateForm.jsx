@@ -332,6 +332,11 @@ export default function ServiceListUpdateForm(props) {
           value="NOANSWER"
           {...getOverrideProps(overrides, "Statusoption2")}
         ></option>
+        <option
+          children="Ringing"
+          value="RINGING"
+          {...getOverrideProps(overrides, "Statusoption3")}
+        ></option>
       </SelectField>
       <TextField
         label="Cost"

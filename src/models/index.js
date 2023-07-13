@@ -5,7 +5,8 @@ import { schema } from './schema';
 const ServiceStatus = {
   "DELIVERD": "DELIVERD",
   "COMPLETED": "COMPLETED",
-  "NOANSWER": "NOANSWER"
+  "NOANSWER": "NOANSWER",
+  "RINGING": "RINGING"
 };
 
 const ServiceType = {
@@ -14,12 +15,18 @@ const ServiceType = {
   "CALL": "CALL"
 };
 
-const { StateCodeList, FreeNumberList, ServiceList } = initSchema(schema);
+const { BillingList, CallLogList, SMSlogList, BusinessUserList, StateCodeList, FreeNumberList, ServiceList, BusinessUserListFreeNumberList, BusinessUserListStateCodeList } = initSchema(schema);
 
 export {
+  BillingList,
+  CallLogList,
+  SMSlogList,
+  BusinessUserList,
   StateCodeList,
   FreeNumberList,
   ServiceList,
+  BusinessUserListFreeNumberList,
+  BusinessUserListStateCodeList,
   ServiceStatus,
   ServiceType
 };

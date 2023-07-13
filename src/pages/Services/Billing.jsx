@@ -1,52 +1,86 @@
-import { ArrowDownTrayIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {  MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import {
   Card,
   CardHeader,
   Typography,
   Button,
-  CardBody,
-  CardFooter,
-  IconButton,
-  Switch,
   Input,
+  CardBody
 } from "@material-tailwind/react";
- 
-const TABLE_HEAD = ["No", "Number", "Active", ""];
- 
-const TABLE_ROWS = [
-  {
-    No: 1,
-    Number: "+12509622767",
-    Active: false
-  },
-  {
-    No: 2,
-    Number: "+15268974521",
-    Active: false
-  },
-  {
-    No: 3,
-    Number: "+169257847586",
-    Active: true
-  },
-  {
-    No: 4,
-    Number: "+12509622767",
-    Active: false
-  },
-  {
-    No: 5,
-    Number: "+12509622767",
-    Active: false
-  },
-  {
-    No: 6,
-    Number: "+12509622767",
-    Active: true
-  },
-];
+import { useState, useMemo, useEffect } from 'react';
+import { Table, Tag } from 'antd';
+import { DataStore } from "aws-amplify";
+import { BillingList } from '../../models';
+import { toast, ToastContainer } from 'react-toastify';
  
 export default function Billing() {
+
+  const column = useMemo(
+    () => [
+      {
+        title: "User",
+        dataIndex: "User",
+        key: "id",
+        sorter: (a, b) => a.User.localeCompare(b.From),
+        sortDirections: ['ascend', 'descend']
+      },
+      {
+        title: "Type",
+        dataIndex: "Type",
+        sorter: (a, b) => a.Type-b.Type,
+        sortDirections: ['ascend', 'descend'],
+        render: (Type) => Type === "SMS" ? <span><Tag color="red">SMS</Tag></span> : Type === "VOICEMAIL" ? <span><Tag color="cyan">VOICEMAIL</Tag></span> : Type === "CALL" ? <span><Tag color="purple">CALL</Tag></span> : <span><Tag color="purple">Deposit</Tag></span>
+      },
+      {
+        title: "Duration",
+        dataIndex: "Duration",
+        sorter: (a, b) => a.Duration-b.Duration,
+        sortDirections: ['ascend', 'descend']
+      },
+      {
+        title: "Date&Time",
+        dataIndex: "createdAt",
+        sorter: (a, b) => a.createdAt.localeCompare(b.createdAt),
+        sortDirections: ['ascend', 'descend']
+      },
+      {
+        title: "Payment History",
+        dataIndex: "Cost",
+        sorter: (a, b) => a.Cost-b.Cost,
+        sortDirections: ['ascend', 'descend'],
+        render: (Cost) => Cost > 0 ? <span><Tag color="blue">{Cost}</Tag></span> : <span><Tag color="magenta">{Cost}</Tag></span> 
+      },
+    ]
+  )
+
+  const [tableData, setTableData] = useState([]);
+  const [search, setSearch] = useState('');
+  const [searchData, setSearchData] = useState([]);
+
+  async function getTableData(){
+    const models = await DataStore.query(BillingList);
+    setTableData(models);
+    console.log(models);
+  }
+
+  const handleSearch = (value) => {
+    setSearch(value);
+  }
+
+  useEffect(() => {
+    getTableData();
+  }, []);
+
+  const setData = () => {
+    const data = tableData.filter((item) => 
+        Object.values(item).some((value) => value && value.toString().toLowerCase().includes(search.toLowerCase())));
+    setSearchData(data);
+  }
+
+  useEffect(() => {
+    setData();
+  }, [search, tableData]);
+
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -58,92 +92,15 @@ export default function Billing() {
           </div>
           <div className="flex w-full shrink-0 gap-2 md:w-max">
             <div className="w-full md:w-72">
-              <Input label="Search" icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
+              <Input label="Search" value={search} onChange={(e) => handleSearch(e.target.value)} icon={<MagnifyingGlassIcon className="h-5 w-5" />}/>
             </div>
-            <Button className="flex items-center gap-3" color="blue" size="sm">
-              <ArrowDownTrayIcon strokeWidth={2} className="h-4 w-4" /> Add Number
-            </Button>
           </div>
         </div>
       </CardHeader>
       <CardBody className="overflow-scroll px-0">
-        <table className="w-full min-w-max table-auto text-left">
-          <thead>
-            <tr>
-              {TABLE_HEAD.map((head) => (
-                <th key={head} className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal leading-none opacity-70"
-                  >
-                    {head}
-                  </Typography>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {TABLE_ROWS.map(
-              ({ No, Number, Active }, index) => {
-                const isLast = index === TABLE_ROWS.length - 1;
-                const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
- 
-                return (
-                  <tr key={No}>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-                        <Typography variant="small" color="blue-gray" className="font-bold">
-                          {No}
-                        </Typography>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" color="blue-gray" className="font-normal">
-                        {Number}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Switch ripple={Active}/>
-                    </td>
-                  </tr>
-                );
-              },
-            )}
-          </tbody>
-        </table>
+        <Table columns={column} dataSource={ search ? searchData : tableData } size="middle"/>
       </CardBody>
-      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-        <Button variant="outlined" color="blue-gray" size="sm">
-          Previous
-        </Button>
-        <div className="flex items-center gap-2">
-          <IconButton variant="outlined" color="blue-gray" size="sm">
-            1
-          </IconButton>
-          <IconButton variant="text" color="blue-gray" size="sm">
-            2
-          </IconButton>
-          <IconButton variant="text" color="blue-gray" size="sm">
-            3
-          </IconButton>
-          <IconButton variant="text" color="blue-gray" size="sm">
-            ...
-          </IconButton>
-          <IconButton variant="text" color="blue-gray" size="sm">
-            8
-          </IconButton>
-          <IconButton variant="text" color="blue-gray" size="sm">
-            9
-          </IconButton>
-          <IconButton variant="text" color="blue-gray" size="sm">
-            10
-          </IconButton>
-        </div>
-        <Button variant="outlined" color="blue-gray" size="sm">
-          Next
-        </Button>
-      </CardFooter>
+      <ToastContainer/>
     </Card>
   );
 }

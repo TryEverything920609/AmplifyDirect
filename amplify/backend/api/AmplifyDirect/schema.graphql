@@ -1,19 +1,64 @@
+type BillingList @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  User: String
+  Type: ServiceType
+  Duration: Float
+  Cost: Float
+}
+
+type CallLogList @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  From: AWSPhone
+  To: AWSPhone
+  Cost: Float
+  Duration: Float
+  Status: ServiceStatus
+}
+
+type SMSlogList @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  From: AWSPhone
+  To: AWSPhone
+  UserName: String
+  Message: String
+  Cost: Float
+  Status: ServiceStatus
+}
+
+type BusinessUserList @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Name: String
+  Email: AWSEmail
+  ContactPersonName: String
+  ContactPersonEmail: AWSEmail
+  CampaignName: String
+  TrackingNumber: String
+  TollFreeNumber: [FreeNumberList] @manyToMany(relationName: "BusinessUserListFreeNumberList")
+  MonthlyFee: Float
+  CostPerSMS: Float
+  CallCostPerMinute: Float
+  AssignState: [StateCodeList] @manyToMany(relationName: "BusinessUserListStateCodeList")
+}
+
 type StateCodeList @model @auth(rules: [{allow: public}]) {
   id: ID!
   StateName: String
   AreaCode: [String]
+  businessuserlists: [BusinessUserList] @manyToMany(relationName: "BusinessUserListStateCodeList")
 }
 
 type FreeNumberList @model @auth(rules: [{allow: public}]) {
   id: ID!
   Number: AWSPhone
   Active: Boolean!
+  businessuserlists: [BusinessUserList] @manyToMany(relationName: "BusinessUserListFreeNumberList")
 }
 
 enum ServiceStatus {
   DELIVERD
   COMPLETED
   NOANSWER
+  RINGING
 }
 
 enum ServiceType {
