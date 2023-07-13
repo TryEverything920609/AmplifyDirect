@@ -3,7 +3,6 @@ import {
   Card,
   CardHeader,
   Typography,
-  Button,
   Input,
   CardBody
 } from "@material-tailwind/react";
@@ -11,7 +10,6 @@ import { useState, useMemo, useEffect } from 'react';
 import { Table, Tag } from 'antd';
 import { DataStore } from "aws-amplify";
 import { CallLogList } from '../../models';
-import { toast, ToastContainer } from 'react-toastify';
  
 export default function CallLog() {
 
@@ -55,8 +53,8 @@ export default function CallLog() {
         sortDirections: ['ascend', 'descend'],
         render: (Status) => Status === "NOANSWER" ? <span><Tag color="red">{Status}</Tag></span> : Status === "RINGING" ? <span><Tag color="cyan">{Status}</Tag></span> : <span><Tag color="purple">{Status}</Tag></span>
       }
-    ]
-  )
+    ], []
+  );
 
   const [tableData, setTableData] = useState([]);
   const [search, setSearch] = useState('');
@@ -84,6 +82,7 @@ export default function CallLog() {
 
   useEffect(() => {
     setData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, tableData]);
 
   return (
@@ -105,7 +104,6 @@ export default function CallLog() {
       <CardBody className="overflow-scroll px-0">
         <Table columns={column} dataSource={ search ? searchData : tableData } size="middle"/>
       </CardBody>
-      <ToastContainer/>
     </Card>
   );
 }

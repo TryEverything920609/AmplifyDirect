@@ -2,7 +2,6 @@ import { Auth } from "aws-amplify";
 import React from "react";
 import {
   Navbar,
-  MobileNav,
   Typography,
   Button,
   Menu,

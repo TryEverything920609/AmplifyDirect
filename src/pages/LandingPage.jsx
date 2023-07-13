@@ -16,11 +16,9 @@ function LandingPage (){
           switch (event) {
             case 'signIn':
             case 'cognitoHostedUI':
-            //   getUser().then(userData => setUser(userData));
               navigator("/dashboard");
               break;
             case 'signOut':
-            //   setUser(null);
               navigator("/login");
               break;
             case 'signIn_failure':
@@ -32,8 +30,7 @@ function LandingPage (){
               break;
           }
         });
-    
-        // getUser().then(userData => setUser(userData));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
 
     return (

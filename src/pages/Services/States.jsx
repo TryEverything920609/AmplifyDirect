@@ -49,7 +49,7 @@ export default function States() {
                     <DeleteOutlinedIcon color="primary" onClick={() => deleteRow(record.id, record.StateName)}/>
                 </>
             }
-        ]
+        ], []
     );
 
     const [tableData, setTableData] = useState([]);
@@ -168,6 +168,7 @@ export default function States() {
 
     useEffect(()=>{
      setData();
+     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[search, tableData]);
 
     const setData = () => {

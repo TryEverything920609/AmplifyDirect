@@ -3,7 +3,6 @@ import {
   Card,
   CardHeader,
   Typography,
-  Button,
   Input,
   CardBody
 } from "@material-tailwind/react";
@@ -11,7 +10,6 @@ import { useState, useMemo, useEffect } from 'react';
 import { Table, Tag } from 'antd';
 import { DataStore } from "aws-amplify";
 import { BillingList } from '../../models';
-import { toast, ToastContainer } from 'react-toastify';
  
 export default function Billing() {
 
@@ -50,7 +48,7 @@ export default function Billing() {
         sortDirections: ['ascend', 'descend'],
         render: (Cost) => Cost > 0 ? <span><Tag color="blue">{Cost}</Tag></span> : <span><Tag color="magenta">{Cost}</Tag></span> 
       },
-    ]
+    ], []
   )
 
   const [tableData, setTableData] = useState([]);
@@ -79,6 +77,7 @@ export default function Billing() {
 
   useEffect(() => {
     setData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, tableData]);
 
   return (
@@ -100,7 +99,6 @@ export default function Billing() {
       <CardBody className="overflow-scroll px-0">
         <Table columns={column} dataSource={ search ? searchData : tableData } size="middle"/>
       </CardBody>
-      <ToastContainer/>
     </Card>
   );
 }

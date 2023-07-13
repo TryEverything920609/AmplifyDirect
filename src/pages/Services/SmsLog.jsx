@@ -3,7 +3,6 @@ import {
   Card,
   CardHeader,
   Typography,
-  Button,
   Input,
   CardBody
 } from "@material-tailwind/react";
@@ -11,7 +10,6 @@ import { useState, useMemo, useEffect } from 'react';
 import { Table, Tag } from 'antd';
 import { DataStore } from "aws-amplify";
 import { SMSlogList } from '../../models';
-import { toast, ToastContainer } from 'react-toastify';
  
 export default function SmsLog() {
 
@@ -65,7 +63,7 @@ export default function SmsLog() {
           </Tag>
         </span>
       }
-    ]
+    ], []
   )
 
   const [tableData, setTableData] = useState([]);
@@ -94,6 +92,7 @@ export default function SmsLog() {
 
   useEffect(() => {
     setData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, tableData]);
 
   return (
@@ -115,7 +114,6 @@ export default function SmsLog() {
       <CardBody className="overflow-scroll px-0">
         <Table columns={column} dataSource={ search ? searchData : tableData } size="middle"/>
       </CardBody>
-      <ToastContainer/>
     </Card>
   );
 }

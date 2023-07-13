@@ -57,7 +57,7 @@ export default function BusinessUser() {
           <DeleteOutlinedIcon color="error" />
         </>
       }
-    ]
+    ], []
   )
 
   const [tableData, setTableData] = useState([]);
