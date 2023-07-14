@@ -87,6 +87,7 @@ export default function States() {
         }
         setId('');
         setState('');
+        setAreacode('');
         setIsEditModalOpen(false);
     }
 

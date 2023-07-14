@@ -91,15 +91,6 @@ export default function Sidebar(props) {
                     </ListItem>
                 </Link>
                 
-                <Link to="/webform">
-                    <ListItem>
-                        <ListItemPrefix>
-                            <WebOutlinedIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Web Form
-                    </ListItem>
-                </Link>
-                
                 <Link to="/setting">
                     <ListItem>
                         <ListItemPrefix>

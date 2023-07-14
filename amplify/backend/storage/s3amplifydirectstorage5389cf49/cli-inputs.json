@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3amplifydirectstorage5389cf49",
+  "bucketName": "amplifydirect-storage-5389cf49",
+  "policyUUID": "431f5772",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

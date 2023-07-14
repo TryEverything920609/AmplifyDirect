@@ -1,5 +1,5 @@
-import { Auth } from "aws-amplify";
-import React from "react";
+import { Auth, DataStore, Storage } from "aws-amplify";
+import React, { useState, useEffect } from "react";
 import {
   Navbar,
   Typography,
@@ -21,32 +21,36 @@ import {
   RocketLaunchIcon,
   Bars2Icon,
 } from "@heroicons/react/24/outline";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { UserProfileList } from "../models";
+import { SettingsInputCompositeTwoTone } from "@mui/icons-material";
+import { ConsoleSqlOutlined } from "@ant-design/icons";
 
 function ProfileMenu() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [useremail, setuseremail] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const closeMenu = () => setIsMenuOpen(false);
-  
-  
+
   const navigator = useNavigate();
   //Menu Action
   const MyProfile = () => {
     console.log("My Profile");
     closeMenu();
-    navigator('/profile');    
-  }
-  
+    navigator("/profile");
+  };
+
   const Help = () => {
     console.log("Help");
     closeMenu();
-    navigator('/help');
-  }
-  
-  const signOut = () =>{
+    navigator("/help");
+  };
+
+  const signOut = () => {
     closeMenu();
     Auth.signOut();
-  }
-  
+  };
+
   // profile menu component
   const profileMenuItems = [
     {
@@ -65,7 +69,6 @@ function ProfileMenu() {
       action: signOut,
     },
   ];
-  
 
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
@@ -96,7 +99,7 @@ function ProfileMenu() {
           return (
             <MenuItem
               key={label}
-              onClick={ () => action() }
+              onClick={() => action()}
               className={`flex items-center gap-2 rounded ${
                 isLastItem
                   ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
@@ -122,7 +125,7 @@ function ProfileMenu() {
     </Menu>
   );
 }
- 
+
 // nav list menu
 const navListMenuItems = [
   {
@@ -141,15 +144,15 @@ const navListMenuItems = [
       "A complete set of UI Elements for building faster websites in less time.",
   },
 ];
- 
+
 function NavListMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
- 
+
   const triggers = {
     onMouseEnter: () => setIsMenuOpen(true),
     onMouseLeave: () => setIsMenuOpen(false),
   };
- 
+
   const renderItems = navListMenuItems.map(({ title, description }) => (
     <a href="#" key={title}>
       <MenuItem>
@@ -162,7 +165,7 @@ function NavListMenu() {
       </MenuItem>
     </a>
   ));
- 
+
   return (
     <React.Fragment>
       <Menu open={isMenuOpen} handler={setIsMenuOpen}>
@@ -192,61 +195,85 @@ function NavListMenu() {
     </React.Fragment>
   );
 }
- 
+
 // nav list component
 const navListItems = [
-//   {
-//     label: "Account",
-//     icon: UserCircleIcon,
-//   },
-//   {
-//     label: "Blocks",
-//     icon: CubeTransparentIcon,
-//   },
-//   {
-//     label: "Docs",
-//     icon: CodeBracketSquareIcon,
-//   },
+  //   {
+  //     label: "Account",
+  //     icon: UserCircleIcon,
+  //   },
+  //   {
+  //     label: "Blocks",
+  //     icon: CubeTransparentIcon,
+  //   },
+  //   {
+  //     label: "Docs",
+  //     icon: CodeBracketSquareIcon,
+  //   },
 ];
- 
+
 function NavList() {
   return (
     <div className="block w-full max-w-full bg-transparent text-white shadow-none rounded-xl transition-all px-0 py-1">
-        <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
-            <NavListMenu />
-            {navListItems.map(({ label, icon }, key) => (
-            <Typography
-                key={label}
-                as="a"
-                href="#"
-                variant="small"
-                color="blue-gray"
-                className="font-normal"
-            >
-                <MenuItem className="flex items-center gap-2 lg:rounded-full">
-                {React.createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
-                {label}
-                </MenuItem>
-            </Typography>
-            ))}
-        </ul>
+      <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
+        <NavListMenu />
+        {navListItems.map(({ label, icon }, key) => (
+          <Typography
+            key={label}
+            as="a"
+            href="#"
+            variant="small"
+            color="blue-gray"
+            className="font-normal"
+          >
+            <MenuItem className="flex items-center gap-2 lg:rounded-full">
+              {React.createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
+              {label}
+            </MenuItem>
+          </Typography>
+        ))}
+      </ul>
     </div>
   );
 }
- 
+
 export default function ComplexNavbar(props) {
-  const [isNavOpen, setIsNavOpen] = React.useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [user, setuser] = useState(null);
+  const [useremail, setuseremail] = useState("");
   const toggleIsNavOpen = () => {
     props.setShow(!props.show);
-  }
- 
+  };
+
   React.useEffect(() => {
     window.addEventListener(
       "resize",
       () => window.innerWidth >= 960 && setIsNavOpen(false)
     );
   }, []);
- 
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      await Auth.currentAuthenticatedUser()
+        .then((user) => {
+          const userEmail = user.attributes.email;
+          console.log(userEmail);
+          setuseremail(useremail);
+        })
+        .catch((err) => console.log(err));
+      
+      const users = await DataStore.query(UserProfileList, (c) => c.Email.eq(useremail));
+      setuser(users);
+      console.log(users);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Navbar className="mx-auto max-w-screen-xl p-2 lg:rounded-full lg:pl-6">
       <div className="relative mx-auto flex items-center text-blue-gray-900">

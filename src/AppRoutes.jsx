@@ -2,7 +2,6 @@ import AuthLayout from "./Layouts/AuthLayout";
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Auth/Login';
 import SignUp from "./pages/Auth/SignUp";
-import { Hub } from "aws-amplify";
 import Layout from "./Layouts/Layout";
 import Dashboard from "./pages/Services/Dashboard";
 import TollFreeNumber from './pages/Services/TollFreeNumbers';
@@ -14,32 +13,92 @@ import Billing from "./pages/Services/Billing";
 import WebForm from "./pages/Services/WebForm";
 import Setting from "./pages/Services/Setting";
 import Profile from './pages/Services/Profile';
+import { Auth } from 'aws-amplify';
+import { Hub, Logger } from 'aws-amplify';
 
-let Sign = false;
+const logger = new Logger('My-Logger');
 
-Hub.listen('auth', (data) => {
-    switch (data.payload.event) {
-      case 'signIn':
-          console.log('user signed in');
-          Sign = true;
-          console.log("Sign in", Sign);
-          break;
-      case 'signUp':
-          console.log('user signed up');
-          Sign = false;
-          break;
-      case 'signOut':
-          console.log('user signed out');
-          Sign = false;
-          break;
-      case 'signIn_failure':
-          console.log('user sign in failed');
-          Sign = false;
-          break;
-      case 'configured':
-          console.log('the Auth module is configured');
-    }
-});
+const listener = (data) => {
+  switch (data.payload.event) {
+    case 'configured':
+      logger.info('the Auth module is configured');
+      break;
+    case 'signIn':
+      logger.info('user signed in');
+      break;
+    case 'signIn_failure':
+      logger.error('user sign in failed');
+      break;
+    case 'signUp':
+      logger.info('user signed up');
+      break;
+    case 'signUp_failure':
+      logger.error('user sign up failed');
+      break;
+    case 'confirmSignUp':
+      logger.info('user confirmation successful');
+      break;
+    case 'completeNewPassword_failure':
+      logger.error('user did not complete new password flow');
+      break;
+    case 'autoSignIn':
+      logger.info('auto sign in successful');
+      break;
+    case 'autoSignIn_failure':
+      logger.error('auto sign in failed');
+      break;
+    case 'forgotPassword':
+      logger.info('password recovery initiated');
+      break;
+    case 'forgotPassword_failure':
+      logger.error('password recovery failed');
+      break;
+    case 'forgotPasswordSubmit':
+      logger.info('password confirmation successful');
+      break;
+    case 'forgotPasswordSubmit_failure':
+      logger.error('password confirmation failed');
+      break;
+    case 'verify':
+      logger.info('TOTP token verification successful');
+      break;
+    case 'tokenRefresh':
+      logger.info('token refresh succeeded');
+      break;
+    case 'tokenRefresh_failure':
+      logger.error('token refresh failed');
+      break;
+    case 'cognitoHostedUI':
+      logger.info('Cognito Hosted UI sign in successful');
+      break;
+    case 'cognitoHostedUI_failure':
+      logger.error('Cognito Hosted UI sign in failed');
+      break;
+    case 'customOAuthState':
+      logger.info('custom state returned from CognitoHosted UI');
+      break;
+    case 'customState_failure':
+      logger.error('custom state failure');
+      break;
+    case 'parsingCallbackUrl':
+      logger.info('Cognito Hosted UI OAuth url parsing initiated');
+      break;
+    case 'userDeleted':
+      logger.info('user deletion successful');
+      break;
+    case 'updateUserAttributes':
+      logger.info('user attributes update successful');
+      break;
+    case 'updateUserAttributes_failure':
+      logger.info('user attributes update failed');
+      break;
+    case 'signOut':
+      logger.info('user signed out');
+      break;
+  }
+};
+
+Hub.listen('auth', listener);
 
 const AppRoutes = [
     {

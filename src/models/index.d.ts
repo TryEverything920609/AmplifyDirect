@@ -18,6 +18,102 @@ export enum ServiceType {
 
 
 
+type EagerVoiceMessageList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<VoiceMessageList, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly Name?: string | null;
+  readonly VoiceMessage?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyVoiceMessageList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<VoiceMessageList, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly Name?: string | null;
+  readonly VoiceMessage?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type VoiceMessageList = LazyLoading extends LazyLoadingDisabled ? EagerVoiceMessageList : LazyVoiceMessageList
+
+export declare const VoiceMessageList: (new (init: ModelInit<VoiceMessageList>) => VoiceMessageList) & {
+  copyOf(source: VoiceMessageList, mutator: (draft: MutableModel<VoiceMessageList>) => MutableModel<VoiceMessageList> | void): VoiceMessageList;
+}
+
+type EagerWebFormList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<WebFormList, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly Privilege?: string | null;
+  readonly Email?: string | null;
+  readonly User?: string | null;
+  readonly Logo?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyWebFormList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<WebFormList, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly Privilege?: string | null;
+  readonly Email?: string | null;
+  readonly User?: string | null;
+  readonly Logo?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type WebFormList = LazyLoading extends LazyLoadingDisabled ? EagerWebFormList : LazyWebFormList
+
+export declare const WebFormList: (new (init: ModelInit<WebFormList>) => WebFormList) & {
+  copyOf(source: WebFormList, mutator: (draft: MutableModel<WebFormList>) => MutableModel<WebFormList> | void): WebFormList;
+}
+
+type EagerUserProfileList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<UserProfileList, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly Name?: string | null;
+  readonly Email?: string | null;
+  readonly Avatar?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyUserProfileList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<UserProfileList, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly Name?: string | null;
+  readonly Email?: string | null;
+  readonly Avatar?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type UserProfileList = LazyLoading extends LazyLoadingDisabled ? EagerUserProfileList : LazyUserProfileList
+
+export declare const UserProfileList: (new (init: ModelInit<UserProfileList>) => UserProfileList) & {
+  copyOf(source: UserProfileList, mutator: (draft: MutableModel<UserProfileList>) => MutableModel<UserProfileList> | void): UserProfileList;
+}
+
 type EagerBillingList = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<BillingList, 'id'>;

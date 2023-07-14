@@ -8,7 +8,7 @@ import { ClockIcon } from "@heroicons/react/24/outline";
 import { MaterialReactTable } from 'material-react-table';
 import { Button } from '@mui/material';
 import { useEffect, useState, useMemo } from 'react';
-import { DataStore } from 'aws-amplify';
+import { Auth, DataStore } from 'aws-amplify';
 import { ServiceList } from '../../models';
 import {
   Card,
@@ -17,10 +17,11 @@ import {
   CardBody,
 } from "@material-tailwind/react";
 import { ContentCopy } from '@mui/icons-material';
+import { toast, ToastContainer } from 'react-toastify';
  
 
 function Dashboard () {
-
+    const [useremail, setuseremail] = useState('');
     const columns = useMemo(
         () => [
             {
@@ -83,14 +84,32 @@ function Dashboard () {
     const [TableData, SetTableData] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const notify = (text) => {
+        toast(text);
+    }
+
     async function getTableData(){
         const models = await DataStore.query(ServiceList);
         setLoading(false);
         SetTableData(models);
     }
+
+    async function getUseremail() {
+        await Auth.currentAuthenticatedUser()
+        .then((user) => {
+          const userEmail = user.attributes.email;
+          if(useremail == userEmail)
+            toast(`Success Your Login ${useremail}`)
+          setuseremail(useremail);
+        })
+        .catch((err) => console.log(err));
+
+
+    }
      
     useEffect(() => {
         setLoading(true);
+        getUseremail();
         getTableData();
     }, []);
 
@@ -204,6 +223,7 @@ function Dashboard () {
                     </CardBody>
                 </Card>
             </div>
+            <ToastContainer/>
         </div>
     )
 }

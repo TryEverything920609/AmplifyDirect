@@ -5,6 +5,12 @@
  **************************************************************************/
 
 export { default as studioTheme } from "./studioTheme";
+export { default as VoiceMessageListCreateForm } from "./VoiceMessageListCreateForm";
+export { default as VoiceMessageListUpdateForm } from "./VoiceMessageListUpdateForm";
+export { default as WebFormListCreateForm } from "./WebFormListCreateForm";
+export { default as WebFormListUpdateForm } from "./WebFormListUpdateForm";
+export { default as UserProfileListCreateForm } from "./UserProfileListCreateForm";
+export { default as UserProfileListUpdateForm } from "./UserProfileListUpdateForm";
 export { default as BillingListCreateForm } from "./BillingListCreateForm";
 export { default as BillingListUpdateForm } from "./BillingListUpdateForm";
 export { default as CallLogListCreateForm } from "./CallLogListCreateForm";

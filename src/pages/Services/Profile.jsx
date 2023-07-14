@@ -12,19 +12,94 @@ import {
     Tooltip,
     Button,
 } from "@material-tailwind/react";
+import { PlusOutlined } from '@ant-design/icons';
+import { Modal, Upload } from 'antd';
 import {
     HomeIcon,
     ChatBubbleLeftEllipsisIcon,
     Cog6ToothIcon,
     PencilIcon,
 } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
 import { MessageCard } from './../../components/cards/message-card';
 import { ProfileInfoCard } from './../../components/cards/profile-info-card';
 import { platformSettingsData } from '../../config/platformSettingsData';
 import { conversationsData } from '../../config/conversationsData';
 import bruce from './../../asset/img/bruce-mars.jpeg';
+import { Storage } from "aws-amplify";
+import { useEffect, useState } from "react";
 export function Profile() {
+    const getBase64 = (file) => {
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+    }
+
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState('');
+    const [previewTitle, setPreviewTitle] = useState('');
+    const [fileUrl, setFileUrl] = useState(null);
+    const [fileList, setFileList] = useState([
+      {
+        uid: '-1',
+        name: 'image.png',
+        status: 'done',
+        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      },
+      {
+        uid: '-xxx',
+        percent: 50,
+        name: 'image.png',
+        status: 'uploading',
+        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      },
+      {
+        uid: '-5',
+        name: 'image.png',
+        status: 'error',
+      },
+    ]);
+    const [email, setEmail] = useState('');
+    const handleFileUpload = async (file) => {
+      try{
+        const result = await Storage.put(file.name, file, {
+          contentType: file.type
+        });
+        setFileList(result.key);
+      }catch(error){
+        console.log("Error uploading file:", error);
+      }
+    }
+    const handleCancel = () => setPreviewOpen(false);
+    const handlePreview = async (file) => {
+      if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj);
+      }
+      setPreviewImage(file.url || file.preview);
+      setPreviewOpen(true);
+      setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+    };
+    const handleChange = ({ fileList: newFileList }) => {setFileList(newFileList); console.log(newFileList)};
+    const uploadButton = (
+      <div>
+        <PlusOutlined />
+        <div
+          style={{
+            marginTop: 8,
+          }}
+        >
+          Upload
+        </div>
+      </div>
+    );
+    
+    useEffect(() => {
+      console.log("HELLo");
+      
+    }, [])
+
     return (
       <>
         <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url(https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80)] bg-cover	bg-center">
@@ -40,6 +115,16 @@ export function Profile() {
                   size="xl"
                   className="rounded-lg shadow-lg shadow-blue-gray-500/40"
                 />
+                <Upload
+                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                  listType="picture-circle"
+                  fileList={fileList}
+                  onPreview={handlePreview}
+                  onChange={handleChange}
+                  // customRequest={handleFileUpload}
+                >
+                  {fileList.length >= 8 ? null : uploadButton}
+                </Upload>
                 <div>
                   <Typography variant="h5" color="blue-gray" className="mb-1">
                     Richard Davis
@@ -153,6 +238,15 @@ export function Profile() {
             </div>
           </CardBody>
         </Card>
+        <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+          <img
+            alt="example"
+            style={{
+              width: '100%',
+            }}
+            src={previewImage}
+          />
+        </Modal>
       </>
     );
   }
