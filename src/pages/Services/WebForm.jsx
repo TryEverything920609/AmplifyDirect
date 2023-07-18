@@ -58,8 +58,25 @@ export default function WebForm() {
   const [searchData, setSearchData] = useState([]);
   const [ isOpenEditModal, setIsOpenEditModel] = useState(false);
   const [ isOpenDeleteModal, setIsOpenDeleteModal ] = useState(false);
+  const [urlData, setUrlData] = useState([]);
   const [imageUrl, setImageUrl] = useState('');
   
+  const fetchImages = async () => {
+    let files = [];
+    try{
+      files = await Storage.list('public/');
+      const updatedData = [];
+      for(let file of files){
+        const url = await Storage.get(file.key);
+        updatedData.push({ key: file.key, image: url});
+      }
+      setData(updatedData);
+      console.log(updatedData);
+    } catch (error){
+      console.log('Error fetching images', error);
+    }
+  }
+
   function handleDeleteOk () {
     
   }
@@ -93,6 +110,10 @@ export default function WebForm() {
     setData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, tableData]);
+
+  useEffect(() => {
+    fetchImages();
+  }, []);
 
   return (
     <Card className="h-full w-full">

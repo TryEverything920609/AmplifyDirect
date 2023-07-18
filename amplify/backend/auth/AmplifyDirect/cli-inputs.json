@@ -2,8 +2,8 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "testAuthIdentityPool",
-    "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "amplif79b8b863",
+    "allowUnauthenticatedIdentities": false,
+    "resourceNameTruncated": "amplif415cedc2",
     "userPoolName": "AmplifyDirect",
     "autoVerifiedAttributes": [
       "email"
@@ -25,21 +25,23 @@
       "Requires Uppercase"
     ],
     "requiredAttributes": [
-      "email"
+      "email",
+      "name"
     ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [],
     "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "Amplif79b8b863_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "Amplif415cedc2_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "79b8b863",
+    "sharedId": "415cedc2",
     "resourceName": "AmplifyDirect",
     "authSelections": "identityPoolAndUserPool",
     "serviceName": "Cognito",
     "usernameAttributes": [
-      "email"
+      "email",
+      "phone_number"
     ],
     "useDefault": "manual",
     "userPoolGroups": false,
@@ -48,28 +50,14 @@
     "thirdPartyAuth": false,
     "authProviders": [],
     "hostedUI": true,
-    "hostedUIDomainName": "gbgk1ablnha6",
+    "hostedUIDomainName": "ey4tui3uo9b2",
     "authProvidersUserPool": [
       "Google",
       "LoginWithAmazon"
     ],
-    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}},{\"ProviderName\":\"LoginWithAmazon\",\"authorize_scopes\":\"profile profile:user_id\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"user_id\"}}]",
+    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"name\":\"name\",\"username\":\"sub\"}},{\"ProviderName\":\"LoginWithAmazon\",\"authorize_scopes\":\"profile profile:user_id\",\"AttributeMapping\":{\"email\":\"email\",\"name\":\"name\",\"username\":\"user_id\"}}]",
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/dashboard\",\"https://main.d3pkie02zxxtk4.amplifyapp.com/dashboard\"],\"LogoutURLs\":[\"http://localhost:3000/login\",\"https://main.d3pkie02zxxtk4.amplifyapp.com/login\"]}",
     "usernameCaseSensitive": false,
-    "useEnabledMfas": true,
-    "authRoleArn": {
-      "Fn::GetAtt": [
-        "AuthRole",
-        "Arn"
-      ]
-    },
-    "unauthRoleArn": {
-      "Fn::GetAtt": [
-        "UnauthRole",
-        "Arn"
-      ]
-    },
-    "breakCircularDependency": true,
-    "dependsOn": []
+    "useEnabledMfas": true
   }
 }

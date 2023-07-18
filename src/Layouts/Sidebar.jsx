@@ -90,6 +90,15 @@ export default function Sidebar(props) {
                         Billing
                     </ListItem>
                 </Link>
+
+                <Link to="/webform">
+                    <ListItem>
+                        <ListItemPrefix>
+                            <WebOutlinedIcon className="h-5 w-5" />
+                        </ListItemPrefix>
+                        Web Form
+                    </ListItem>
+                </Link>
                 
                 <Link to="/setting">
                     <ListItem>
