@@ -32,13 +32,15 @@ export default function CallLog() {
         title: "Cost",
         dataIndex: "Cost",
         sorter: (a, b) => a.Cost-b.Cost,
-        sortDirections: ['ascend', 'descend']
+        sortDirections: ['ascend', 'descend'],
+        render: (Cost) => <span><Tag color="magenta">-{Cost.toFixed(3)}$</Tag></span>
       },
       {
         title: "Duration",
         dataIndex: "Duration",
         sorter: (a, b) => a.Duration-b.Duration,
-        sortDirections: ['ascend', 'descend']
+        sortDirections: ['ascend', 'descend'],
+        render: (Duration) => <span><Tag color="blue">{Duration.toFixed(1)}min</Tag></span>
       },
       {
         title: "Date&Time",
@@ -76,7 +78,12 @@ export default function CallLog() {
 
   const setData = () => {
     const data = tableData.filter((item) => 
-        Object.values(item).some((value) => value && value.toString().toLowerCase().includes(search.toLowerCase())));
+      item.From && item.From.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.To && item.To.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.Duration && item.Duration.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.Cost && item.Cost.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.Status && item.Status.toString().toLowerCase().includes(search.toLowerCase())
+    );
     setSearchData(data);
   }
 

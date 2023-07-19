@@ -45,7 +45,7 @@ export default function SmsLog() {
         dataIndex: "Cost",
         sorter: (a, b) => a.Cost-b.Cost,
         sortDirections: ['ascend', 'descend'],
-        render: (Cost) => <span><Tag color="magenta">-{Cost}</Tag></span>
+        render: (Cost) => <span><Tag color="magenta">-{Cost.toFixed(3)}$</Tag></span>
       },
       {
         title: "Date&Time",
@@ -87,7 +87,13 @@ export default function SmsLog() {
 
   const setData = () => {
     const data = tableData.filter((item) => 
-        Object.values(item).some((value) => value && value.toString().toLowerCase().includes(search.toLowerCase())));
+      item.From && item.From.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.To && item.To.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.UserName && item.UserName.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.Message && item.Message.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.Cost && item.Cost.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.Status && item.Status.toString().toLowerCase().includes(search.toLowerCase())
+    );
     setSearchData(data);
   }
 

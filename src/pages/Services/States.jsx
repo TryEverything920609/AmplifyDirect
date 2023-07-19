@@ -174,7 +174,9 @@ export default function States() {
 
     const setData = () => {
         const data = tableData.filter((item) => 
-            Object.values(item).some((value) => value && value.toString().toLowerCase().includes(search.toLowerCase())));
+          item.State && item.State.toString().toLowerCase().includes(search.toLowerCase()) ||
+          item.AreaCode && item.AreaCode.toString().toLowerCase().includes(search.toLowerCase())
+        );
         setSearchData(data);
     }
 

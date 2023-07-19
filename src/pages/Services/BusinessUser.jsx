@@ -101,9 +101,14 @@ export default function BusinessUser() {
 
   const setData = () => {
     const data = tableData.filter((item) => 
-        Object.values(item).some((value) => value && value.toString().toLowerCase().includes(search.toLowerCase())));
+      item.Name && item.Name.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.Email && item.Email.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.ContactPersonName && item.ContactPersonName.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.ContactPersonEmail && item.ContactPersonEmail.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.CampaignName && item.CampaignName.toString().toLowerCase().includes(search.toLowerCase())
+   );
     setSearchData(data);
-  }
+}
 
   useEffect(() => {
     setData();

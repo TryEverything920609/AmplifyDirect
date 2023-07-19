@@ -123,13 +123,13 @@ export default function Setting() {
                 );
 
                 getTableData();
-                notify('Add Areacode Success');
+                notify('Add Success');
             }catch(err){
                 notify("Add Failed");
             }
         }
         else{
-            notify('Please Enter StateName and Areacode');
+            notify('Please Enter MessageName and VoiceMail');
         }
         setAreacode('');
         setState('');
@@ -161,9 +161,11 @@ export default function Setting() {
 
     const setData = () => {
         const data = tableData.filter((item) => 
-            Object.values(item).some((value) => value && value.toString().toLowerCase().includes(search.toLowerCase())));
+          item.Name && item.Name.toString().toLowerCase().includes(search.toLowerCase()) ||
+          item.VoiceMessage && item.VoiceMessage.toString().toLowerCase().includes(search.toLowerCase())
+        );
         setSearchData(data);
-    }
+      }
 
     useEffect(() => {
         getTableData();
@@ -186,7 +188,7 @@ export default function Setting() {
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
-                        Add AreaCode
+                        Add Default VoiceMessage
                     </Button>
                 </div>
             </div>

@@ -33,7 +33,15 @@ export default function Billing() {
         title: "Duration",
         dataIndex: "Duration",
         sorter: (a, b) => a.Duration-b.Duration,
-        sortDirections: ['ascend', 'descend']
+        sortDirections: ['ascend', 'descend'],
+        render: (Duration) => <span><Tag color="blue">{Duration.toFixed(1)}min</Tag></span>
+      },
+      {
+        title: "Payment History",
+        dataIndex: "Cost",
+        sorter: (a, b) => a.Cost-b.Cost,
+        sortDirections: ['ascend', 'descend'],
+        render: (Cost) => Cost > 0 ? <span><Tag color="blue">{Cost.toFixed(3)}$</Tag></span> : <span><Tag color="magenta">{Cost}</Tag></span> 
       },
       {
         title: "Date&Time",
@@ -41,13 +49,7 @@ export default function Billing() {
         sorter: (a, b) => a.createdAt.localeCompare(b.createdAt),
         sortDirections: ['ascend', 'descend']
       },
-      {
-        title: "Payment History",
-        dataIndex: "Cost",
-        sorter: (a, b) => a.Cost-b.Cost,
-        sortDirections: ['ascend', 'descend'],
-        render: (Cost) => Cost > 0 ? <span><Tag color="blue">{Cost}</Tag></span> : <span><Tag color="magenta">{Cost}</Tag></span> 
-      },
+      
     ], []
   )
 
@@ -71,7 +73,11 @@ export default function Billing() {
 
   const setData = () => {
     const data = tableData.filter((item) => 
-        Object.values(item).some((value) => value && value.toString().toLowerCase().includes(search.toLowerCase())));
+      item.User && item.User.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.Type && item.Type.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.Duration && item.Duration.toString().toLowerCase().includes(search.toLowerCase()) ||
+      item.Cost && item.Cost.toString().toLowerCase().includes(search.toLowerCase())
+    );
     setSearchData(data);
   }
 

@@ -8,12 +8,41 @@ import { useState, useEffect } from "react";
 import { DataStore, Storage, Auth, Predicates } from "aws-amplify";
 import { UserProfileList } from "../../models";
 import defaultImage from '../../asset/img/team-4.jpeg';
+import { Upload } from "antd";
 
 function Profile() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [avatar, setAvatar] = useState('');
   const [imageUrl, setImageUrl] = useState('')
+  const [fileList, setFileList] = useState([
+    {
+      uid: '-1',
+      name: 'image.png',
+      status:  'done',
+      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+    }
+  ]);
+
+  const onChange = ({fileList:newFileList}) => {
+    setFileList(newFileList);
+  };
+
+  const onPreview = async (file) => {
+    let src = file.url;
+    if(!src){
+      src = await new Promise(((resolve)=>{
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      }));
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  }
+
   function getUserEmail(){
     Auth.currentAuthenticatedUser()
     .then((user) => {
@@ -39,7 +68,8 @@ function Profile() {
 
     Storage.get(avatar)
     .then((url) => {
-      console.log("Hello", url);
+      console.log("avatar: ", avatar);
+      console.log("GetImage", url);
       setImageUrl(url);
     })
     .catch((err) => {
@@ -69,65 +99,14 @@ function Profile() {
                 <div className="flex w-full justify-center px-4 lg:order-2 lg:w-3/12">
                   <div className="relative">
                     <div className="-mt-20 w-40">
-                      <Avatar
-                        src={imageUrl ? imageUrl : defaultImage}
-                        alt="Profile picture"
-                        variant="circular"
-                        className="h-full w-full shadow-xl"
-                        onClick={() => console.log("Hi", imageUrl)}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-10 flex w-full justify-center px-4 lg:order-3 lg:mt-0 lg:w-4/12 lg:justify-end lg:self-center">
-                  <Button className="bg-blue-400">Conntect</Button>
-                </div>
-                <div className="w-full px-4 lg:order-1 lg:w-4/12">
-                  <div className="flex justify-center py-4 pt-8 lg:pt-4">
-                    <div className="mr-4 p-3 text-center">
-                      <Typography
-                        variant="lead"
-                        color="blue-gray"
-                        className="font-bold uppercase"
+                      <Upload
+                        fileList={fileList}
+                        listType="picture"
+                        onChange={onChange}
+                        onPreview={onPreview}
                       >
-                        22
-                      </Typography>
-                      <Typography
-                        variant="small"
-                        className="font-normal text-blue-gray-500"
-                      >
-                        Friends
-                      </Typography>
-                    </div>
-                    <div className="mr-4 p-3 text-center">
-                      <Typography
-                        variant="lead"
-                        color="blue-gray"
-                        className="font-bold uppercase"
-                      >
-                        10
-                      </Typography>
-                      <Typography
-                        variant="small"
-                        className="font-normal text-blue-gray-500"
-                      >
-                        Photos
-                      </Typography>
-                    </div>
-                    <div className="p-3 text-center lg:mr-4">
-                      <Typography
-                        variant="lead"
-                        color="blue-gray"
-                        className="font-bold uppercase"
-                      >
-                        89
-                      </Typography>
-                      <Typography
-                        variant="small"
-                        className="font-normal text-blue-gray-500"
-                      >
-                        Comments
-                      </Typography>
+                        Upload
+                      </Upload>
                     </div>
                   </div>
                 </div>
@@ -153,21 +132,6 @@ function Profile() {
                   <Typography className="font-medium text-blue-gray-700">
                     University of Computer Science
                   </Typography>
-                </div>
-              </div>
-
-              <div className="mb-10 border-t border-blue-gray-50 py-6 text-center">
-                <div className="mt-2 flex flex-wrap justify-center">
-                  <div className="flex w-full flex-col items-center px-4 lg:w-9/12">
-                    <Typography className="mb-8 font-normal text-blue-gray-500">
-                      An artist of considerable range, Jenna the name taken by
-                      Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                      performs and records all of his own music, giving it a
-                      warm, intimate feel with a solid groove structure. An
-                      artist of considerable range.
-                    </Typography>
-                    <Button variant="text">Show more</Button>
-                  </div>
                 </div>
               </div>
             </div>

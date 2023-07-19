@@ -40,7 +40,7 @@ export default function WebForm() {
       {
         title: "Logo",
         dataIndex: "Logo",
-        render:  (Logo) => <Image src={imageUrl} width={150}/>
+        render:  (Logo) => Logo && <image src={Logo} alt="image"/>
       },
       {
         title: "Option",

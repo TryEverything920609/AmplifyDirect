@@ -125,10 +125,11 @@ export default function TollFreeNumber() {
 
   useEffect(() => {
     const data = TableData.filter((item) => 
-      Object.values(item).some((value) => value && value.toString().toLowerCase().includes(search.toLowerCase()))
+      item.Number && item.Number.toString().toLowerCase().includes(search.toLowerCase())
     );
     setSearchData(data);
   }, [search, TableData]);
+
   return (
     <>
       <Card className="h-full w-full">
@@ -147,7 +148,7 @@ export default function TollFreeNumber() {
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
-                        Add AreaCode
+                        Add Toll FreeNumber
                     </Button>
                 </div>
           </div>
