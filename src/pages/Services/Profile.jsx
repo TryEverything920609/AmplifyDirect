@@ -5,22 +5,51 @@ import {
   BuildingLibraryIcon,
 } from "@heroicons/react/24/solid";
 import { useState, useMemo, useEffect } from "react";
-import { DataStore, Storage, Auth } from "aws-amplify";
+import { DataStore, Storage, Auth, Predicates } from "aws-amplify";
+import { Send } from "@mui/icons-material";
+import { UserProfileList } from "../../models";
 
 function Profile() {
-
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [avatar, setAvatar] = useState('');
+  const [imageUrl, setImageUrl] = useState('')
   async function getUserEmail(){
     await Auth.currentAuthenticatedUser()
     .then((user) => {
       console.log("Hello");
       const userEmail = user.attributes.email;
-      console.log("User: ", userEmail);
+      const Name = user.attributes.name;
+      setEmail(userEmail);
+      setName(Name);
+      console.log("User: ", userEmail, "name: ", Name);
+    })
+    .catch((err) => console.log(err))
+
+    await DataStore.query(UserProfileList, (c) => c.Email.eq(email))
+    .then((users) => {
+      console.log("Hello", users);
+      const Avatar = users[0].Avatar;
+      if(Avatar){
+        console.log("Hello", users[0].Avatar);
+        setAvatar(Avatar);
+      }
+    })
+    .catch((err) => console.log(err));
+
+    await Storage.get(avatar)
+    .then((url) => {
+      console.log("Hello", url);
+      setImageUrl(url);
+    })
+    .catch((err) => {
+      console.log(err);
     })
   }
 
   useEffect(() => {
     getUserEmail();
-  })
+  }, []);
 
   return (
     <>
@@ -37,10 +66,11 @@ function Profile() {
                   <div className="relative">
                     <div className="-mt-20 w-40">
                       <Avatar
-                        src="/img/team-2.jpg"
+                        src={imageUrl}
                         alt="Profile picture"
                         variant="circular"
                         className="h-full w-full shadow-xl"
+                        onClick={() => console.log("Hi", imageUrl)}
                       />
                     </div>
                   </div>
@@ -100,7 +130,7 @@ function Profile() {
               </div>
               <div className="my-8 text-center">
                 <Typography variant="h2" color="blue-gray" className="mb-2">
-                  Jenna Stones
+                  {name}
                 </Typography>
                 <div className="mb-16 flex items-center justify-center gap-2">
                   <MapPinIcon className="-mt-px h-4 w-4 text-blue-gray-700" />
