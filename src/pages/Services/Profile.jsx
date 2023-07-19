@@ -45,8 +45,8 @@ function Profile() {
     imgWindow?.document.write(image.outerHTML);
   }
 
-  async function getUserEmail(){
-    await Auth.currentAuthenticatedUser()
+  function getUserEmail(){
+    Auth.currentAuthenticatedUser()
     .then((user) => {
       console.log("Hello");
       const userEmail = user.attributes.email;
@@ -56,8 +56,14 @@ function Profile() {
       console.log("User: ", userEmail, "name: ", Name);
     })
     .catch((err) => console.log(err))
+  }
 
-    await DataStore.query(UserProfileList, (c) => c.Email.eq(email))
+  useEffect(() => {
+    getUserEmail();
+  }, []);
+
+  useEffect(() => {
+    DataStore.query(UserProfileList, (c) => c.Email.eq(email))
     .then((users) => {
       console.log("Hello", users);
       const Avatar = users[0].Avatar;
@@ -67,27 +73,18 @@ function Profile() {
       }
     })
     .catch((err) => console.log(err));
-
-    
-    if(avatar){
-      await Storage.get(avatar, {level: 'public'})
-      .then((url) => {
-        console.log("avatar: ", avatar);
-        console.log("GetImage", url);
-        setImageUrl(url);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-    }
-
-    await Storage.list('public/')
-    .then((result) => {console.log("Hello", result)})
-    .catch((err) => {console.log("HELLO", err)})
-  }
+  }, [email]);
 
   useEffect(() => {
-    getUserEmail();
+    Storage.get(avatar, {level: 'public'})
+    .then((url) => {
+      console.log("avatar: ", avatar);
+      console.log("GetImage", url);
+      setImageUrl(url);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }, [avatar]);
 
   return (

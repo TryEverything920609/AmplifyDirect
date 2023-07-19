@@ -26,7 +26,7 @@ import { UserProfileList } from "../models";
 import { SettingsInputCompositeTwoTone } from "@mui/icons-material";
 import { ConsoleSqlOutlined } from "@ant-design/icons";
 
-function ProfileMenu() {
+function ProfileMenu(props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [useremail, setuseremail] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -83,7 +83,7 @@ function ProfileMenu() {
             size="sm"
             alt="candice wu"
             className="border border-blue-500 p-0.5"
-            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+            src={props.image ? props.image : "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"}
           />
           <ChevronDownIcon
             strokeWidth={2.5}
@@ -252,27 +252,48 @@ export default function ComplexNavbar(props) {
     );
   }, []);
 
+  const [email, setEmail] = useState('');
+  const [avatar, setAvatar] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  function getUserEmail(){
+    Auth.currentAuthenticatedUser()
+    .then((user) => {
+      console.log("Hello");
+      const userEmail = user.attributes.email;
+      setEmail(userEmail);
+      console.log("User: ", userEmail);
+    })
+    .catch((err) => console.log(err))
+  }
+
   useEffect(() => {
-    getData();
+    getUserEmail();
   }, []);
 
-  const getData = async () => {
-    try {
-      await Auth.currentAuthenticatedUser()
-        .then((user) => {
-          const userEmail = user.attributes.email;
-          console.log(userEmail);
-          setuseremail(useremail);
-        })
-        .catch((err) => console.log(err));
-      
-      const users = await DataStore.query(UserProfileList, (c) => c.Email.eq(useremail));
-      setuser(users);
-      console.log(users);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  useEffect(() => {
+    DataStore.query(UserProfileList, (c) => c.Email.eq(email))
+    .then((users) => {
+      console.log("Hello", users);
+      const Avatar = users[0].Avatar;
+      if(Avatar){
+        console.log("Hello", users[0].Avatar);
+        setAvatar(Avatar);
+      }
+    })
+    .catch((err) => console.log(err));
+  }, [email]);
+
+  useEffect(() => {
+    Storage.get(avatar, {level: 'public'})
+    .then((url) => {
+      console.log("avatar: ", avatar);
+      console.log("GetImage", url);
+      setImageUrl(url);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }, [avatar]);
 
   return (
     <Navbar className="mx-auto max-w-screen-xl p-2 lg:rounded-full lg:pl-6">
@@ -296,7 +317,7 @@ export default function ComplexNavbar(props) {
         >
           <Bars2Icon className="h-6 w-6" />
         </IconButton>
-        <ProfileMenu />
+        <ProfileMenu image = {imageUrl}/>
       </div>
     </Navbar>
   );
