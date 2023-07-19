@@ -4,18 +4,18 @@ import {
   BriefcaseIcon,
   BuildingLibraryIcon,
 } from "@heroicons/react/24/solid";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { DataStore, Storage, Auth, Predicates } from "aws-amplify";
-import { Send } from "@mui/icons-material";
 import { UserProfileList } from "../../models";
+import defaultImage from '../../asset/img/team-4.jpeg';
 
 function Profile() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [avatar, setAvatar] = useState('');
   const [imageUrl, setImageUrl] = useState('')
-  async function getUserEmail(){
-    await Auth.currentAuthenticatedUser()
+  function getUserEmail(){
+    Auth.currentAuthenticatedUser()
     .then((user) => {
       console.log("Hello");
       const userEmail = user.attributes.email;
@@ -26,7 +26,7 @@ function Profile() {
     })
     .catch((err) => console.log(err))
 
-    await DataStore.query(UserProfileList, (c) => c.Email.eq(email))
+    DataStore.query(UserProfileList, (c) => c.Email.eq(email))
     .then((users) => {
       console.log("Hello", users);
       const Avatar = users[0].Avatar;
@@ -37,7 +37,7 @@ function Profile() {
     })
     .catch((err) => console.log(err));
 
-    await Storage.get(avatar)
+    Storage.get(avatar)
     .then((url) => {
       console.log("Hello", url);
       setImageUrl(url);
@@ -45,6 +45,10 @@ function Profile() {
     .catch((err) => {
       console.log(err);
     })
+
+    Storage.list('public/')
+    .then((result) => {console.log("Hello", result)})
+    .catch((err) => {console.log("HELLO", err)})
   }
 
   useEffect(() => {
@@ -66,7 +70,7 @@ function Profile() {
                   <div className="relative">
                     <div className="-mt-20 w-40">
                       <Avatar
-                        src={imageUrl}
+                        src={imageUrl ? imageUrl : defaultImage}
                         alt="Profile picture"
                         variant="circular"
                         className="h-full w-full shadow-xl"
