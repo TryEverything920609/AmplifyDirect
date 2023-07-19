@@ -9,6 +9,8 @@ import { DataStore, Storage, Auth, Predicates } from "aws-amplify";
 import { UserProfileList } from "../../models";
 import defaultImage from '../../asset/img/team-4.jpeg';
 import { Upload } from "antd";
+import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBBtn, MDBTypography } from 'mdb-react-ui-kit';
+
 
 function Profile() {
   const [name, setName] = useState('');
@@ -43,8 +45,8 @@ function Profile() {
     imgWindow?.document.write(image.outerHTML);
   }
 
-  function getUserEmail(){
-    Auth.currentAuthenticatedUser()
+  async function getUserEmail(){
+    await Auth.currentAuthenticatedUser()
     .then((user) => {
       console.log("Hello");
       const userEmail = user.attributes.email;
@@ -55,7 +57,7 @@ function Profile() {
     })
     .catch((err) => console.log(err))
 
-    DataStore.query(UserProfileList, (c) => c.Email.eq(email))
+    await DataStore.query(UserProfileList, (c) => c.Email.eq(email))
     .then((users) => {
       console.log("Hello", users);
       const Avatar = users[0].Avatar;
@@ -66,79 +68,102 @@ function Profile() {
     })
     .catch((err) => console.log(err));
 
-    Storage.get(avatar)
-    .then((url) => {
-      console.log("avatar: ", avatar);
-      console.log("GetImage", url);
-      setImageUrl(url);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    
+    if(avatar){
+      await Storage.get(avatar, {level: 'public'})
+      .then((url) => {
+        console.log("avatar: ", avatar);
+        console.log("GetImage", url);
+        setImageUrl(url);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    }
 
-    Storage.list('public/')
+    await Storage.list('public/')
     .then((result) => {console.log("Hello", result)})
     .catch((err) => {console.log("HELLO", err)})
   }
 
   useEffect(() => {
     getUserEmail();
-  }, []);
+  }, [avatar]);
 
   return (
-    <>
-      <section className="relative block h-[50vh]">
-        <div className="bg-profile-background absolute top-0 h-full w-full bg-[url('asset/images/background-1.jpg')] bg-cover bg-center" />
-        <div className="absolute top-0 h-full w-full bg-black/75 bg-cover bg-center" />
-      </section>
-      <section className="relative bg-blue-gray-50/50 py-16 px-4">
-        <div className="container mx-auto">
-          <div className="relative mb-6 -mt-64 flex w-full min-w-0 flex-col break-words rounded-3xl bg-white shadow-xl shadow-gray-500/5">
-            <div className="px-6">
-              <div className="flex flex-wrap justify-center">
-                <div className="flex w-full justify-center px-4 lg:order-2 lg:w-3/12">
-                  <div className="relative">
-                    <div className="-mt-20 w-40">
-                      <Upload
-                        fileList={fileList}
-                        listType="picture"
-                        onChange={onChange}
-                        onPreview={onPreview}
-                      >
-                        Upload
-                      </Upload>
-                    </div>
-                  </div>
-                </div>
+    <div className="gradient-custom-2" style={{ backgroundColor: '#9de2ff' }}>
+    <MDBContainer className="py-5 h-100">
+      <MDBRow className="justify-content-center align-items-center h-100">
+        <MDBCol lg="9" xl="7">
+          <MDBCard>
+            <div className="rounded-top text-white d-flex flex-row" style={{ backgroundColor: '#000', height: '200px' }}>
+              <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '150px' }}>
+                <MDBCardImage src={imageUrl ? imageUrl : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"}
+                  alt="Generic placeholder image" className="mt-4 mb-2 img-thumbnail" fluid style={{ width: '150px', zIndex: '1' }} />
+                <MDBBtn outline color="dark" style={{height: '36px', overflow: 'visible'}}>
+                  Edit profile
+                </MDBBtn>
               </div>
-              <div className="my-8 text-center">
-                <Typography variant="h2" color="blue-gray" className="mb-2">
-                  {name}
-                </Typography>
-                <div className="mb-16 flex items-center justify-center gap-2">
-                  <MapPinIcon className="-mt-px h-4 w-4 text-blue-gray-700" />
-                  <Typography className="font-medium text-blue-gray-700">
-                    Los Angeles, California
-                  </Typography>
+              <div className="ms-3" style={{ marginTop: '130px' }}>
+                <MDBTypography tag="h5">Andy Horwitz</MDBTypography>
+                <MDBCardText>New York</MDBCardText>
+              </div>
+            </div>
+            <div className="p-4 text-black" style={{ backgroundColor: '#f8f9fa' }}>
+              <div className="d-flex justify-content-end text-center py-1">
+                <div>
+                  <MDBCardText className="mb-1 h5">253</MDBCardText>
+                  <MDBCardText className="small text-muted mb-0">Photos</MDBCardText>
                 </div>
-                <div className="mb-2 flex items-center justify-center gap-2">
-                  <BriefcaseIcon className="-mt-px h-4 w-4 text-blue-gray-700" />
-                  <Typography className="font-medium text-blue-gray-700">
-                    Solution Manager - Creative Tim Officer
-                  </Typography>
+                <div className="px-3">
+                  <MDBCardText className="mb-1 h5">1026</MDBCardText>
+                  <MDBCardText className="small text-muted mb-0">Followers</MDBCardText>
                 </div>
-                <div className="mb-2 flex items-center justify-center gap-2">
-                  <BuildingLibraryIcon className="-mt-px h-4 w-4 text-blue-gray-700" />
-                  <Typography className="font-medium text-blue-gray-700">
-                    University of Computer Science
-                  </Typography>
+                <div>
+                  <MDBCardText className="mb-1 h5">478</MDBCardText>
+                  <MDBCardText className="small text-muted mb-0">Following</MDBCardText>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-    </>
+            <MDBCardBody className="text-black p-4">
+              <div className="mb-5">
+                <p className="lead fw-normal mb-1">About</p>
+                <div className="p-4" style={{ backgroundColor: '#f8f9fa' }}>
+                  <MDBCardText className="font-italic mb-1">Web Developer</MDBCardText>
+                  <MDBCardText className="font-italic mb-1">Lives in New York</MDBCardText>
+                  <MDBCardText className="font-italic mb-0">Photographer</MDBCardText>
+                </div>
+              </div>
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                <MDBCardText className="lead fw-normal mb-0">Recent photos</MDBCardText>
+                <MDBCardText className="mb-0"><a href="#!" className="text-muted">Show all</a></MDBCardText>
+              </div>
+              <MDBRow>
+                <MDBCol className="mb-2">
+                  <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
+                    alt="image 1" className="w-100 rounded-3" />
+                </MDBCol>
+                <MDBCol className="mb-2">
+                  <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
+                    alt="image 1" className="w-100 rounded-3" />
+                </MDBCol>
+              </MDBRow>
+              <MDBRow className="g-2">
+                <MDBCol className="mb-2">
+                  <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
+                    alt="image 1" className="w-100 rounded-3" />
+                </MDBCol>
+                <MDBCol className="mb-2">
+                  <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
+                    alt="image 1" className="w-100 rounded-3" />
+                </MDBCol>
+              </MDBRow>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
+  </div>
   );
 }
 
