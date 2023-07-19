@@ -2,6 +2,12 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const UserTypeList = {
+  "ADMIN": "ADMIN",
+  "OWNER": "OWNER",
+  "USER": "USER"
+};
+
 const ServiceStatus = {
   "DELIVERD": "DELIVERD",
   "COMPLETED": "COMPLETED",
@@ -31,6 +37,7 @@ export {
   ServiceList,
   BusinessUserListFreeNumberList,
   BusinessUserListStateCodeList,
+  UserTypeList,
   ServiceStatus,
   ServiceType
 };

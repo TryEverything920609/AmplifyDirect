@@ -6,7 +6,13 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import {
+  Button,
+  Flex,
+  Grid,
+  SelectField,
+  TextField,
+} from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { UserProfileList } from "../models";
 import { fetchByPath, validateField } from "./utils";
@@ -26,21 +32,25 @@ export default function UserProfileListCreateForm(props) {
     Name: "",
     Email: "",
     Avatar: "",
+    Role: "",
   };
   const [Name, setName] = React.useState(initialValues.Name);
   const [Email, setEmail] = React.useState(initialValues.Email);
   const [Avatar, setAvatar] = React.useState(initialValues.Avatar);
+  const [Role, setRole] = React.useState(initialValues.Role);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.Name);
     setEmail(initialValues.Email);
     setAvatar(initialValues.Avatar);
+    setRole(initialValues.Role);
     setErrors({});
   };
   const validations = {
     Name: [],
     Email: [],
     Avatar: [],
+    Role: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -71,6 +81,7 @@ export default function UserProfileListCreateForm(props) {
           Name,
           Email,
           Avatar,
+          Role,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -128,6 +139,7 @@ export default function UserProfileListCreateForm(props) {
               Name: value,
               Email,
               Avatar,
+              Role,
             };
             const result = onChange(modelFields);
             value = result?.Name ?? value;
@@ -154,6 +166,7 @@ export default function UserProfileListCreateForm(props) {
               Name,
               Email: value,
               Avatar,
+              Role,
             };
             const result = onChange(modelFields);
             value = result?.Email ?? value;
@@ -180,6 +193,7 @@ export default function UserProfileListCreateForm(props) {
               Name,
               Email,
               Avatar: value,
+              Role,
             };
             const result = onChange(modelFields);
             value = result?.Avatar ?? value;
@@ -194,6 +208,49 @@ export default function UserProfileListCreateForm(props) {
         hasError={errors.Avatar?.hasError}
         {...getOverrideProps(overrides, "Avatar")}
       ></TextField>
+      <SelectField
+        label="Role"
+        placeholder="Please select an option"
+        isDisabled={false}
+        value={Role}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              Name,
+              Email,
+              Avatar,
+              Role: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.Role ?? value;
+          }
+          if (errors.Role?.hasError) {
+            runValidationTasks("Role", value);
+          }
+          setRole(value);
+        }}
+        onBlur={() => runValidationTasks("Role", Role)}
+        errorMessage={errors.Role?.errorMessage}
+        hasError={errors.Role?.hasError}
+        {...getOverrideProps(overrides, "Role")}
+      >
+        <option
+          children="Admin"
+          value="ADMIN"
+          {...getOverrideProps(overrides, "Roleoption0")}
+        ></option>
+        <option
+          children="Owner"
+          value="OWNER"
+          {...getOverrideProps(overrides, "Roleoption1")}
+        ></option>
+        <option
+          children="User"
+          value="USER"
+          {...getOverrideProps(overrides, "Roleoption2")}
+        ></option>
+      </SelectField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

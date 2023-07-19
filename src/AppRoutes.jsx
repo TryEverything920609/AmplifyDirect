@@ -18,6 +18,22 @@ import { Hub, Logger } from 'aws-amplify';
 
 const logger = new Logger('My-Logger');
 
+const getData = async() => {
+  try {
+    await Auth.currentAuthenticatedUser()
+      .then((user) => {
+        const userEmail = user.attributes.email;
+        console.log(userEmail);
+      })
+      .catch((err) => console.log(err));
+    
+    
+    console.log(users);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const listener = (data) => {
   switch (data.payload.event) {
     case 'configured':
@@ -25,6 +41,7 @@ const listener = (data) => {
       break;
     case 'signIn':
       logger.info('user signed in');
+      
       break;
     case 'signIn_failure':
       logger.error('user sign in failed');

@@ -24,6 +24,15 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "untitledfield": {
+                    "name": "untitledfield",
+                    "isArray": false,
+                    "type": {
+                        "enum": "UserTypeList"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -174,6 +183,15 @@ export const schema = {
                     "name": "Avatar",
                     "isArray": false,
                     "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Role": {
+                    "name": "Role",
+                    "isArray": false,
+                    "type": {
+                        "enum": "UserTypeList"
+                    },
                     "isRequired": false,
                     "attributes": []
                 },
@@ -1094,6 +1112,14 @@ export const schema = {
         }
     },
     "enums": {
+        "UserTypeList": {
+            "name": "UserTypeList",
+            "values": [
+                "ADMIN",
+                "OWNER",
+                "USER"
+            ]
+        },
         "ServiceStatus": {
             "name": "ServiceStatus",
             "values": [
@@ -1115,5 +1141,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "f7d06897e8ccc5d150be2ecdcbe35147"
+    "version": "0238f9dbab7f9b0fb731f5bc8da26eef"
 };

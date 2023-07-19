@@ -6,7 +6,13 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import {
+  Button,
+  Flex,
+  Grid,
+  SelectField,
+  TextField,
+} from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { VoiceMessageList } from "../models";
 import { fetchByPath, validateField } from "./utils";
@@ -25,20 +31,26 @@ export default function VoiceMessageListCreateForm(props) {
   const initialValues = {
     Name: "",
     VoiceMessage: "",
+    untitledfield: "",
   };
   const [Name, setName] = React.useState(initialValues.Name);
   const [VoiceMessage, setVoiceMessage] = React.useState(
     initialValues.VoiceMessage
   );
+  const [untitledfield, setUntitledfield] = React.useState(
+    initialValues.untitledfield
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.Name);
     setVoiceMessage(initialValues.VoiceMessage);
+    setUntitledfield(initialValues.untitledfield);
     setErrors({});
   };
   const validations = {
     Name: [],
     VoiceMessage: [],
+    untitledfield: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -68,6 +80,7 @@ export default function VoiceMessageListCreateForm(props) {
         let modelFields = {
           Name,
           VoiceMessage,
+          untitledfield,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -124,6 +137,7 @@ export default function VoiceMessageListCreateForm(props) {
             const modelFields = {
               Name: value,
               VoiceMessage,
+              untitledfield,
             };
             const result = onChange(modelFields);
             value = result?.Name ?? value;
@@ -149,6 +163,7 @@ export default function VoiceMessageListCreateForm(props) {
             const modelFields = {
               Name,
               VoiceMessage: value,
+              untitledfield,
             };
             const result = onChange(modelFields);
             value = result?.VoiceMessage ?? value;
@@ -163,6 +178,48 @@ export default function VoiceMessageListCreateForm(props) {
         hasError={errors.VoiceMessage?.hasError}
         {...getOverrideProps(overrides, "VoiceMessage")}
       ></TextField>
+      <SelectField
+        label="Untitledfield"
+        placeholder="Please select an option"
+        isDisabled={false}
+        value={untitledfield}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              Name,
+              VoiceMessage,
+              untitledfield: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.untitledfield ?? value;
+          }
+          if (errors.untitledfield?.hasError) {
+            runValidationTasks("untitledfield", value);
+          }
+          setUntitledfield(value);
+        }}
+        onBlur={() => runValidationTasks("untitledfield", untitledfield)}
+        errorMessage={errors.untitledfield?.errorMessage}
+        hasError={errors.untitledfield?.hasError}
+        {...getOverrideProps(overrides, "untitledfield")}
+      >
+        <option
+          children="Admin"
+          value="ADMIN"
+          {...getOverrideProps(overrides, "untitledfieldoption0")}
+        ></option>
+        <option
+          children="Owner"
+          value="OWNER"
+          {...getOverrideProps(overrides, "untitledfieldoption1")}
+        ></option>
+        <option
+          children="User"
+          value="USER"
+          {...getOverrideProps(overrides, "untitledfieldoption2")}
+        ></option>
+      </SelectField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

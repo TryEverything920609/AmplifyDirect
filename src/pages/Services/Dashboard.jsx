@@ -97,14 +97,16 @@ function Dashboard () {
     async function getUseremail() {
         await Auth.currentAuthenticatedUser()
         .then((user) => {
+          console.log("HELLO");
           const userEmail = user.attributes.email;
-          if(useremail == userEmail)
-            toast(`Success Your Login ${useremail}`)
-          setuseremail(useremail);
+          if(useremail === userEmail)
+            notify(`Success Your Login ${useremail}`);
+          setuseremail(userEmail);
+          console.log("User: ", user);
+          const groups = user.signInUserSession.accessToken.payload["cognito:group"];
+          console.log("user belongs to these groups: ", groups);
         })
         .catch((err) => console.log(err));
-
-
     }
      
     useEffect(() => {

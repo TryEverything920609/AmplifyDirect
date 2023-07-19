@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { GridProps, SelectFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 export declare type ValidationResponse = {
     hasError: boolean;
@@ -15,16 +15,19 @@ export declare type ValidationFunction<T> = (value: T, validationResponse: Valid
 export declare type VoiceMessageListCreateFormInputValues = {
     Name?: string;
     VoiceMessage?: string;
+    untitledfield?: string;
 };
 export declare type VoiceMessageListCreateFormValidationValues = {
     Name?: ValidationFunction<string>;
     VoiceMessage?: ValidationFunction<string>;
+    untitledfield?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type VoiceMessageListCreateFormOverridesProps = {
     VoiceMessageListCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
     Name?: PrimitiveOverrideProps<TextFieldProps>;
     VoiceMessage?: PrimitiveOverrideProps<TextFieldProps>;
+    untitledfield?: PrimitiveOverrideProps<SelectFieldProps>;
 } & EscapeHatchProps;
 export declare type VoiceMessageListCreateFormProps = React.PropsWithChildren<{
     overrides?: VoiceMessageListCreateFormOverridesProps | undefined | null;

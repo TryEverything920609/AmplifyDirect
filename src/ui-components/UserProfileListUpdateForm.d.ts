@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { GridProps, SelectFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 import { UserProfileList } from "../models";
 export declare type ValidationResponse = {
@@ -17,11 +17,13 @@ export declare type UserProfileListUpdateFormInputValues = {
     Name?: string;
     Email?: string;
     Avatar?: string;
+    Role?: string;
 };
 export declare type UserProfileListUpdateFormValidationValues = {
     Name?: ValidationFunction<string>;
     Email?: ValidationFunction<string>;
     Avatar?: ValidationFunction<string>;
+    Role?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type UserProfileListUpdateFormOverridesProps = {
@@ -29,6 +31,7 @@ export declare type UserProfileListUpdateFormOverridesProps = {
     Name?: PrimitiveOverrideProps<TextFieldProps>;
     Email?: PrimitiveOverrideProps<TextFieldProps>;
     Avatar?: PrimitiveOverrideProps<TextFieldProps>;
+    Role?: PrimitiveOverrideProps<SelectFieldProps>;
 } & EscapeHatchProps;
 export declare type UserProfileListUpdateFormProps = React.PropsWithChildren<{
     overrides?: UserProfileListUpdateFormOverridesProps | undefined | null;

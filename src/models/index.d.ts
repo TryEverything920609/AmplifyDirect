@@ -2,6 +2,12 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
 
+export enum UserTypeList {
+  ADMIN = "ADMIN",
+  OWNER = "OWNER",
+  USER = "USER"
+}
+
 export enum ServiceStatus {
   DELIVERD = "DELIVERD",
   COMPLETED = "COMPLETED",
@@ -26,6 +32,7 @@ type EagerVoiceMessageList = {
   readonly id: string;
   readonly Name?: string | null;
   readonly VoiceMessage?: string | null;
+  readonly untitledfield?: UserTypeList | keyof typeof UserTypeList | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -38,6 +45,7 @@ type LazyVoiceMessageList = {
   readonly id: string;
   readonly Name?: string | null;
   readonly VoiceMessage?: string | null;
+  readonly untitledfield?: UserTypeList | keyof typeof UserTypeList | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -91,6 +99,7 @@ type EagerUserProfileList = {
   readonly Name?: string | null;
   readonly Email?: string | null;
   readonly Avatar?: string | null;
+  readonly Role?: UserTypeList | keyof typeof UserTypeList | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -104,6 +113,7 @@ type LazyUserProfileList = {
   readonly Name?: string | null;
   readonly Email?: string | null;
   readonly Avatar?: string | null;
+  readonly Role?: UserTypeList | keyof typeof UserTypeList | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

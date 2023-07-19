@@ -1,7 +1,14 @@
+enum UserTypeList {
+  ADMIN
+  OWNER
+  USER
+}
+
 type VoiceMessageList @model @auth(rules: [{allow: public}]) {
   id: ID!
   Name: String
   VoiceMessage: String
+  untitledfield: UserTypeList
 }
 
 type WebFormList @model @auth(rules: [{allow: public}]) {
@@ -17,6 +24,7 @@ type UserProfileList @model @auth(rules: [{allow: public}]) {
   Name: String
   Email: String
   Avatar: String
+  Role: UserTypeList
 }
 
 type BillingList @model @auth(rules: [{allow: public}]) {
