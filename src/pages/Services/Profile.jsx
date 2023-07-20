@@ -1,50 +1,25 @@
-import { Avatar, Typography, Button } from "@material-tailwind/react";
+import { Avatar, Typography } from "@material-tailwind/react";
 import {
   MapPinIcon,
   BriefcaseIcon,
   BuildingLibraryIcon,
 } from "@heroicons/react/24/solid";
-import { useState, useEffect } from "react";
-import { DataStore, Storage, Auth, Predicates } from "aws-amplify";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBoxOpen, faCartArrowDown, faChartPie, faChevronDown, faClipboard, faCommentDots, faFileAlt, faPlus, faRocket, faStore } from '@fortawesome/free-solid-svg-icons';
+import { Col, Row, Button, Dropdown } from '@themesberg/react-bootstrap';
+import { ChoosePhotoWidget, ProfileCardWidget } from "../../components/Widgets";
+import { GeneralInfoForm } from "../../components/Forms";
+import { useState, useEffect, useContext } from "react";
+import { DataStore, Storage, Auth } from "aws-amplify";
 import { UserProfileList } from "../../models";
 import defaultImage from '../../asset/img/team-4.jpeg';
-import { Upload } from "antd";
-import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBBtn, MDBTypography } from 'mdb-react-ui-kit';
 
 
 function Profile() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [avatar, setAvatar] = useState('');
-  const [imageUrl, setImageUrl] = useState('')
-  const [fileList, setFileList] = useState([
-    {
-      uid: '-1',
-      name: 'image.png',
-      status:  'done',
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-    }
-  ]);
-
-  const onChange = ({fileList:newFileList}) => {
-    setFileList(newFileList);
-  };
-
-  const onPreview = async (file) => {
-    let src = file.url;
-    if(!src){
-      src = await new Promise(((resolve)=>{
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj);
-        reader.onload = () => resolve(reader.result);
-      }));
-    }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
-  }
-
+  const [imageUrl, setImageUrl] = useState('');
   function getUserEmail(){
     Auth.currentAuthenticatedUser()
     .then((user) => {
@@ -88,79 +63,76 @@ function Profile() {
   }, [avatar]);
 
   return (
-    <div className="gradient-custom-2" style={{ backgroundColor: '#9de2ff' }}>
-    <MDBContainer className="py-5 h-100">
-      <MDBRow className="justify-content-center align-items-center h-100">
-        <MDBCol lg="9" xl="7">
-          <MDBCard>
-            <div className="rounded-top text-white d-flex flex-row" style={{ backgroundColor: '#000', height: '200px' }}>
-              <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '150px' }}>
-                <MDBCardImage src={imageUrl ? imageUrl : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"}
-                  alt="Generic placeholder image" className="mt-4 mb-2 img-thumbnail" fluid style={{ width: '150px', zIndex: '1' }} />
-                <MDBBtn outline color="dark" style={{height: '36px', overflow: 'visible'}}>
-                  Edit profile
-                </MDBBtn>
-              </div>
-              <div className="ms-3" style={{ marginTop: '130px' }}>
-                <MDBTypography tag="h5">Andy Horwitz</MDBTypography>
-                <MDBCardText>New York</MDBCardText>
-              </div>
-            </div>
-            <div className="p-4 text-black" style={{ backgroundColor: '#f8f9fa' }}>
-              <div className="d-flex justify-content-end text-center py-1">
-                <div>
-                  <MDBCardText className="mb-1 h5">253</MDBCardText>
-                  <MDBCardText className="small text-muted mb-0">Photos</MDBCardText>
-                </div>
-                <div className="px-3">
-                  <MDBCardText className="mb-1 h5">1026</MDBCardText>
-                  <MDBCardText className="small text-muted mb-0">Followers</MDBCardText>
-                </div>
-                <div>
-                  <MDBCardText className="mb-1 h5">478</MDBCardText>
-                  <MDBCardText className="small text-muted mb-0">Following</MDBCardText>
-                </div>
-              </div>
-            </div>
-            <MDBCardBody className="text-black p-4">
-              <div className="mb-5">
-                <p className="lead fw-normal mb-1">About</p>
-                <div className="p-4" style={{ backgroundColor: '#f8f9fa' }}>
-                  <MDBCardText className="font-italic mb-1">Web Developer</MDBCardText>
-                  <MDBCardText className="font-italic mb-1">Lives in New York</MDBCardText>
-                  <MDBCardText className="font-italic mb-0">Photographer</MDBCardText>
-                </div>
-              </div>
-              <div className="d-flex justify-content-between align-items-center mb-4">
-                <MDBCardText className="lead fw-normal mb-0">Recent photos</MDBCardText>
-                <MDBCardText className="mb-0"><a href="#!" className="text-muted">Show all</a></MDBCardText>
-              </div>
-              <MDBRow>
-                <MDBCol className="mb-2">
-                  <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
-                    alt="image 1" className="w-100 rounded-3" />
-                </MDBCol>
-                <MDBCol className="mb-2">
-                  <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
-                    alt="image 1" className="w-100 rounded-3" />
-                </MDBCol>
-              </MDBRow>
-              <MDBRow className="g-2">
-                <MDBCol className="mb-2">
-                  <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
-                    alt="image 1" className="w-100 rounded-3" />
-                </MDBCol>
-                <MDBCol className="mb-2">
-                  <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
-                    alt="image 1" className="w-100 rounded-3" />
-                </MDBCol>
-              </MDBRow>
-            </MDBCardBody>
-          </MDBCard>
-        </MDBCol>
-      </MDBRow>
-    </MDBContainer>
-  </div>
+    <>
+      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <Dropdown>
+          <Dropdown.Toggle as={Button} variant="secondary" className="text-dark me-2">
+            <FontAwesomeIcon icon={faPlus} className="me-2" />
+            <span>New</span>
+          </Dropdown.Toggle>
+          <Dropdown.Menu className="dashboard-dropdown dropdown-menu-left mt-2">
+            <Dropdown.Item>
+              <FontAwesomeIcon icon={faFileAlt} className="me-2" /> Document
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <FontAwesomeIcon icon={faCommentDots} className="me-2" /> Message
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <FontAwesomeIcon icon={faBoxOpen} className="me-2" /> Product
+            </Dropdown.Item>
+
+            <Dropdown.Divider />
+
+            <Dropdown.Item>
+              <FontAwesomeIcon icon={faRocket} className="text-danger me-2" /> Subscription Plan
+              </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <div className="d-flex">
+          <Dropdown>
+            <Dropdown.Toggle as={Button} variant="primary">
+              <FontAwesomeIcon icon={faClipboard} className="me-2" /> Reports
+              <span className="icon icon-small ms-1"><FontAwesomeIcon icon={faChevronDown} /></span>
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="dashboard-dropdown dropdown-menu-left mt-1">
+              <Dropdown.Item>
+                <FontAwesomeIcon icon={faBoxOpen} className="me-2" /> Products
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <FontAwesomeIcon icon={faStore} className="me-2" /> Customers
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <FontAwesomeIcon icon={faCartArrowDown} className="me-2" /> Orders
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <FontAwesomeIcon icon={faChartPie} className="me-2" /> Console
+              </Dropdown.Item>
+
+              <Dropdown.Divider />
+
+              <Dropdown.Item>
+                <FontAwesomeIcon icon={faRocket} className="text-success me-2" /> All Reports
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      </div>
+
+      <Row>
+        <Col xs={12} xl={8}>
+          <GeneralInfoForm />
+        </Col>
+
+        <Col xs={12} xl={4}>
+          <Row>
+            <Col xs={12}>
+              <ProfileCardWidget image = {imageUrl}/>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </>
   );
 }
 
