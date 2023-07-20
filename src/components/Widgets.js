@@ -12,14 +12,10 @@ export const ProfileCardWidget = (props) => {
       <div style={{ backgroundImage: `url(${ProfileCover})` }} className="profile-cover rounded-top" />
       <Card.Body className="pb-5">
         <Card.Img src={props.image ? props.image : Profile1} alt="Neil Portrait" className="user-avatar large-avatar rounded-circle mx-auto mt-n7 mb-4" />
-        <Card.Title>Neil Sims</Card.Title>
-        <Card.Subtitle className="fw-normal">Senior Software Engineer</Card.Subtitle>
-        <Card.Text className="text-gray mb-4">New York, USA</Card.Text>
-
-        <Button variant="primary" size="sm" className="me-2">
-          <FontAwesomeIcon icon={faUserPlus} className="me-1" /> Connect
+        <Card.Title>props.name</Card.Title>
+        <Button variant="primary" size="sm" className="me-2" >
+          <FontAwesomeIcon icon={faUserPlus} className="me-1" /> Upload
         </Button>
-        <Button variant="secondary" size="sm">Send Message</Button>
       </Card.Body>
     </Card>
   );
