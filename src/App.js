@@ -1,22 +1,70 @@
-import './App.css';
-import './asset/css/animate.css';
-import './asset/css/App.css';
-import './asset/css/base.css';
-import './asset/css/fontawesome-all.css';
-import './asset/css/magnific-popup.css';
-import './asset/css/owl.carousel.css';
-import './asset/css/responseive.css';
-import './asset/css/shortcodes.css';
-import './asset/css/line-awesome.min.css';
-import 'react-toastify/dist/ReactToastify.css';
-import { useRoutes } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import AppRoutes from './AppRoutes';
-import { store } from './redux/store';
+import "./assets/styles/main.css";
+import "./assets/styles/responsive.css";
+import { createContext, useEffect, useState } from "react";
+import { useRoutes } from "react-router-dom";
+import AppRoutes from "./AppRoutes";
+import { Auth, DataStore, Hub } from "aws-amplify";
+import { UserProfileList, UserTypeList } from './models';
+import { UserContext } from "./context/AuthContext";
 
-function App() {
-  const pages = useRoutes(AppRoutes);
-  return <Provider store={store}>{ pages }</Provider>
+const App = () => {
+
+  const pages = useRoutes(AppRoutes);  
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    Hub.listen('auth', ({payload: {event, data}}) => {
+      switch(event){
+        case 'signIn':
+        case 'cognitoHostedUI':
+          getUser().then(userData => setUser(userData));
+          console.log("Hello, SignIn");
+          break;
+        case 'signOut':
+          setUser(null);
+          break;
+        case 'signIn_failure':
+        case 'cognitoHostedUI_failure':
+          console.log('Sign in failure', data);
+          break;
+      }
+    });
+    getUser().then(userData => setUser(userData))
+  }, []);
+
+  function getUser() {
+    return Auth.currentAuthenticatedUser()
+      .then(userData => userData)
+      .catch(() => console.log('Not signed in'));
+  }
+
+  function saveUser () {
+    if(user){
+      const userEmail = user.attributes.email;
+      DataStore.query(UserProfileList, (c) => c.Email.eq(userEmail))
+      .then((users) => {
+        if(users.length == 0){
+          console.log("User not found")
+          DataStore.save(
+            new UserProfileList({
+              "Name":user.attributes.name,
+              "Email": user.attributes.email,
+              "Role": UserTypeList.USER
+            }).then(() => console.log('Data Save Successful'))
+          )
+        }
+        else{
+          console.log("User found");
+        }
+      })
+    }
+  }
+
+  useEffect(() => saveUser(), [user]);
+
+  return(
+    <UserContext.Provider value={user}>{ pages }</UserContext.Provider>
+  )
 }
 
 export default App;

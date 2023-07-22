@@ -22,9 +22,10 @@ type WebFormList @model @auth(rules: [{allow: public}]) {
 type UserProfileList @model @auth(rules: [{allow: public}]) {
   id: ID!
   Name: String
-  Email: String
+  Email: AWSEmail
   Avatar: String
   Role: UserTypeList
+  PhoneNumber: AWSPhone
 }
 
 type BillingList @model @auth(rules: [{allow: public}]) {

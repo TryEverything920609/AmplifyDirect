@@ -16,7 +16,6 @@
         "AmplifyDirect": {}
       },
       "storage": {
-        "s3amplifydirectstoraged2224b0b": {},
         "s3amplifydirectstorage5389cf49": {}
       }
     }

@@ -3,15 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Amplify } from 'aws-amplify';
-import awsConfig from './aws-exports';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '@material-tailwind/react';
+import { Amplify } from 'aws-amplify';
 import { AmplifyProvider } from '@aws-amplify/ui-react';
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'antd/dist/reset.css';
+import awsConfig from './aws-exports';
 
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
@@ -49,11 +44,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <ThemeProvider>
-        <AmplifyProvider>
-          <App />
-        </AmplifyProvider>
-      </ThemeProvider>
+      <AmplifyProvider>
+        <App/>
+      </AmplifyProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

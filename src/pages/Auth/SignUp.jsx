@@ -1,145 +1,174 @@
-import React, { useState } from 'react';
-import { Auth } from 'aws-amplify';
+import { useState } from 'react';
+import logo1 from '../../assets/images/OAuth/Amazon.png';
+import logo2 from '../../assets/images/OAuth/Apple.svg';
+import logo3 from '../../assets/images/OAuth/Facebook.svg';
+import logo4 from '../../assets/images/OAuth/Google.png';
 import {
-  MDBBtn,
-  MDBContainer,
-  MDBCard,
-  MDBCardBody,
-  MDBCardImage,
-  MDBRow,
-  MDBCol,
-  MDBIcon,
-  MDBInput,
-  MDBCheckbox,
-  MDBModal,
-  MDBModalDialog,
-  MDBModalContent,
-  MDBModalHeader,
-  MDBModalTitle,
-  MDBModalBody,
-  MDBModalFooter,
-}
-from 'mdb-react-ui-kit';
-import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import iphone from '../../asset/images/iPhone.svg';
-import './Login.css';
+    Layout,
+    Button,
+    Typography,
+    Card,
+    Form,
+    Input,
+    Checkbox,
+    Modal
+} from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import { Auth, DataStore } from 'aws-amplify';
+import { UserProfileList, UserTypeList } from '../../models';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
+const { Title } = Typography;
+const { Content } = Layout;
 
 function SignUp() {
-  const navigator = useNavigate();
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [code, setCode] = useState('');
-  const toggleShow = () => setShowConfirm(!showConfirm);
-  const notify = (text) => {
-    toast(text);
-  }
+    const navigator = useNavigate();
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [code, setCode] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
-  async function EmailSignUp(){
-    console.log('email = >', email);
-    console.log('password => ', password);
-    try{
-      await Auth.signUp({
-        username: email,
-        password: password
-      });
-      notify("Success")
-      toggleShow();
-    }catch(error){
-      console.log('error signing up:', error);
-      notify("Please Set your password Strong")
+    const handleOk = async () => {
+        try{
+            await Auth.confirmSignUp(email, code);
+            navigator('/signin');
+        }catch(error){
+            console.log('error confirming sign up', error);
+        }
+        setCode('');
+        setShowModal(false);
     }
-  }
 
-  async function confirm(){
-    try{
-      console.log(email, 'email');
-      await Auth.confirmSignUp(email, code);
-      notify("success");
-      navigator("/login");
-    }catch(error){
-      console.log(error);
-      notify("Please check your verification code");
+    const handleCancel = () => {
+        setCode('');
+        setShowModal(false);
     }
-  }
 
-  return (
-    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '100vh'}}>
-      <MDBContainer>
-        <MDBCard>
-          <MDBRow className='g-0'>
-            <MDBCol md='6'>
-              <MDBCardImage src = {iphone} alt="login form" className='rounded-start w-100'/>
-            </MDBCol>
+    const signup = async () => {
+        console.log("SIGN UP");
+        try{
+            await Auth.signUp({
+                username: email,
+                password: password,
+                attributes:{
+                    email: email,
+                    name: name
+                } 
+            }).then(user => {
+                console.log("Saving");
+                DataStore.save(
+                    new UserProfileList({
+                        "Name": name,
+                        "Email": email,
+                        "Role" : UserTypeList.USER
+                    })
+                ).then(() => console.log("Success Saving"));
+            });
+            
+            setShowModal(true);
+        } catch(error){
+            console.log('error signin up: ', error);
+        }
+    }
+    return (
+        <>
+            <Layout className='layout-default ant-layout layout-sign-up'>
+                <Content className='p-0'>
+                    <div className='sign-up-header'>
+                        <div className='content'>
+                            <Title>Sign Up</Title>
+                        </div>
+                    </div>
+                    <Card
+                        className='card-signup header-solid h-full ant-card pt-0'
+                        title = {<h5>Sign Up With</h5>}
+                        bordered="false"
+                    >
+                        <div className="sign-up-gateways">
+                            <Button type="false" onClick={() => Auth.federatedSignIn({ provider : CognitoHostedUIIdentityProvider.Amazon })}>
+                                <img src={logo1} alt="logo 1" />
+                            </Button>
+                            <Button type="false" onClick={() => Auth.federatedSignIn({ provider : CognitoHostedUIIdentityProvider.Apple })}>
+                                <img src={logo2} alt="logo 2" />
+                            </Button>
+                            <Button type="false" onClick={() => Auth.federatedSignIn({ provider : CognitoHostedUIIdentityProvider.Facebook })}>
+                                <img src={logo3} alt="logo 3" />
+                            </Button>
+                            <Button type="false" onClick={() => Auth.federatedSignIn({ provider : CognitoHostedUIIdentityProvider.Google })}>
+                                <img src={logo4} alt="logo 4" />
+                            </Button>
+                        </div>
+                        <p className='text-center my-25, font-semibold text-muted'>Or</p>
+                        <Form
+                            name="basic"
+                            initialValues={{ remember: true }}
+                            className="row-col"
+                        >
+                            <Form.Item
+                                name="Name"
+                                rules={[
+                                    { required: true, message: "Please input your username!" },
+                                ]}
+                            >
+                                <Input placeholder="Name" value={name} onChange={(e)=>setName(e.target.value)}/>
+                            </Form.Item>
+                            <Form.Item
+                                name="email"
+                                rules={[
+                                    { required: true, message: "Please input your email!" },
+                                    { type: 'email', message: "Please Correct Email"}
+                                ]}
+                            >
+                                <Input placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                            </Form.Item>
+                            <Form.Item
+                                name="password"
+                                rules={[
+                                    { required: true, message: "Please input your password!" },
+                                ]}
+                            >
+                                <Input.Password placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
+                            </Form.Item>
 
-            <MDBCol md='6'>
-              <MDBCard className='my-5 cascading-right' style={{background: 'hsla(0, 0%, 100%, 0.55)',  backdropFilter: 'blur(30px)'}}>
-                <MDBCardBody className='p-5 shadow-5 text-center'>
+                            <Form.Item name="remember" valuePropName="checked">
+                                <Checkbox>
+                                    I agree the{" "}
+                                    <a href="#pablo" className="font-bold text-dark">
+                                    Terms and Conditions
+                                    </a>
+                                </Checkbox>
+                            </Form.Item>
 
-                  <h2 className="fw-bold mb-5">Sign up now</h2>
-                  <MDBInput wrapperClass='mb-4' value={email} label='Email' id='emailInput' type='email' onChange={e=>setEmail(e.target.value)}/>
-                  <MDBInput wrapperClass='mb-4' value={password} label='Password' id='passwordInput' type='password' onChange={e => setPassword(e.target.value)}/>
-
-                  <div className='d-flex justify-content-center mb-4'>
-                    <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Subscribe to our newsletter' />
-                  </div>
-
-                  <MDBBtn className='w-60 mb-4' size='md' onClick={EmailSignUp}>sign up</MDBBtn>
-
-                  <div className="text-center">
-
-                    <p>or sign in with:</p>
-
-                    <MDBBtn tag='button' color='none' className='mx-3' style={{ color: '#1266f1' }} onClick={() => Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Amazon })}>
-                      <MDBIcon fab icon='amazon' size="sm"/>
-                    </MDBBtn>
-
-                    <MDBBtn tag='button' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                      <MDBIcon fab icon='facebook' size="sm"/>
-                    </MDBBtn>
-
-                    <MDBBtn tag='button'  color='none' className='mx-3' style={{ color: '#1266f1' }} onClick={() => Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google })}>
-                      <MDBIcon fab icon='google' size="sm"/>
-                    </MDBBtn>
-
-                    <MDBBtn tag='button' color='none' className='mx-3' style={{ color: '#1266f1' }}>
-                      <MDBIcon fab icon='apple' size="sm"/>
-                    </MDBBtn>
-
-                  </div>
-
-                </MDBCardBody>
-              </MDBCard>
-            </MDBCol>
-
-          </MDBRow>
-        </MDBCard>
-
-      </MDBContainer>
-      <MDBModal tabIndex='-1' show={showConfirm} setShow={setShowConfirm}>
-        <MDBModalDialog centered>
-          <MDBModalContent>
-            <MDBModalHeader>
-              <MDBModalTitle>Confirm Verify Code</MDBModalTitle>
-              <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn>
-            </MDBModalHeader>
-            <MDBModalBody>
-              <MDBInput label= 'Verify Code' id='verifycodeInput' type='text' value={code} onChange={e=>setCode(e.target.value)}/>
-            </MDBModalBody>
-            <MDBModalFooter>
-              <MDBBtn color='secondary' onClick={toggleShow}>
-                Close
-              </MDBBtn>
-              <MDBBtn onClick={confirm}>Confirm</MDBBtn>
-            </MDBModalFooter>
-          </MDBModalContent>
-        </MDBModalDialog>
-      </MDBModal>
-      <ToastContainer/>
-    </div>
-  );
+                            <Form.Item>
+                                <Button
+                                    style={{ width: "100%" }}
+                                    type="primary"
+                                    htmlType="submit"
+                                    onClick={() => signup()}
+                                >
+                                    SIGN UP
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                        <p className="font-semibold text-muted text-center">
+                            Already have an account?{" "}
+                            <Link to="/signin" className="font-bold text-dark">
+                                Sign In
+                            </Link>
+                        </p>
+                    </Card>
+                </Content>
+            </Layout>
+            <Modal
+                title= "Email Verification"
+                open = {showModal}
+                onOk={handleOk}
+                onCancel={handleCancel}
+            >
+                <Input placeholder='please confirm verification code' value={code} onChange={(e) => setCode(e.target.value)}></Input>
+            </Modal>
+        </>
+    )
 }
 
 export default SignUp;

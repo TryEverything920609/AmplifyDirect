@@ -100,6 +100,7 @@ type EagerUserProfileList = {
   readonly Email?: string | null;
   readonly Avatar?: string | null;
   readonly Role?: UserTypeList | keyof typeof UserTypeList | null;
+  readonly PhoneNumber?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -114,6 +115,7 @@ type LazyUserProfileList = {
   readonly Email?: string | null;
   readonly Avatar?: string | null;
   readonly Role?: UserTypeList | keyof typeof UserTypeList | null;
+  readonly PhoneNumber?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

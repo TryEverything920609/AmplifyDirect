@@ -175,7 +175,7 @@ export const schema = {
                 "Email": {
                     "name": "Email",
                     "isArray": false,
-                    "type": "String",
+                    "type": "AWSEmail",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -192,6 +192,13 @@ export const schema = {
                     "type": {
                         "enum": "UserTypeList"
                     },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "PhoneNumber": {
+                    "name": "PhoneNumber",
+                    "isArray": false,
+                    "type": "AWSPhone",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -1141,5 +1148,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "0238f9dbab7f9b0fb731f5bc8da26eef"
+    "version": "595fdc03ff191077cee25555e2bafd63"
 };

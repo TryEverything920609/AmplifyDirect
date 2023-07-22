@@ -17,12 +17,14 @@ export declare type UserProfileListCreateFormInputValues = {
     Email?: string;
     Avatar?: string;
     Role?: string;
+    PhoneNumber?: string;
 };
 export declare type UserProfileListCreateFormValidationValues = {
     Name?: ValidationFunction<string>;
     Email?: ValidationFunction<string>;
     Avatar?: ValidationFunction<string>;
     Role?: ValidationFunction<string>;
+    PhoneNumber?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type UserProfileListCreateFormOverridesProps = {
@@ -31,6 +33,7 @@ export declare type UserProfileListCreateFormOverridesProps = {
     Email?: PrimitiveOverrideProps<TextFieldProps>;
     Avatar?: PrimitiveOverrideProps<TextFieldProps>;
     Role?: PrimitiveOverrideProps<SelectFieldProps>;
+    PhoneNumber?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type UserProfileListCreateFormProps = React.PropsWithChildren<{
     overrides?: UserProfileListCreateFormOverridesProps | undefined | null;

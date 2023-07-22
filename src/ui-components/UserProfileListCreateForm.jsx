@@ -33,24 +33,30 @@ export default function UserProfileListCreateForm(props) {
     Email: "",
     Avatar: "",
     Role: "",
+    PhoneNumber: "",
   };
   const [Name, setName] = React.useState(initialValues.Name);
   const [Email, setEmail] = React.useState(initialValues.Email);
   const [Avatar, setAvatar] = React.useState(initialValues.Avatar);
   const [Role, setRole] = React.useState(initialValues.Role);
+  const [PhoneNumber, setPhoneNumber] = React.useState(
+    initialValues.PhoneNumber
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.Name);
     setEmail(initialValues.Email);
     setAvatar(initialValues.Avatar);
     setRole(initialValues.Role);
+    setPhoneNumber(initialValues.PhoneNumber);
     setErrors({});
   };
   const validations = {
     Name: [],
-    Email: [],
+    Email: [{ type: "Email" }],
     Avatar: [],
     Role: [],
+    PhoneNumber: [{ type: "Phone" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -82,6 +88,7 @@ export default function UserProfileListCreateForm(props) {
           Email,
           Avatar,
           Role,
+          PhoneNumber,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -140,6 +147,7 @@ export default function UserProfileListCreateForm(props) {
               Email,
               Avatar,
               Role,
+              PhoneNumber,
             };
             const result = onChange(modelFields);
             value = result?.Name ?? value;
@@ -167,6 +175,7 @@ export default function UserProfileListCreateForm(props) {
               Email: value,
               Avatar,
               Role,
+              PhoneNumber,
             };
             const result = onChange(modelFields);
             value = result?.Email ?? value;
@@ -194,6 +203,7 @@ export default function UserProfileListCreateForm(props) {
               Email,
               Avatar: value,
               Role,
+              PhoneNumber,
             };
             const result = onChange(modelFields);
             value = result?.Avatar ?? value;
@@ -221,6 +231,7 @@ export default function UserProfileListCreateForm(props) {
               Email,
               Avatar,
               Role: value,
+              PhoneNumber,
             };
             const result = onChange(modelFields);
             value = result?.Role ?? value;
@@ -251,6 +262,35 @@ export default function UserProfileListCreateForm(props) {
           {...getOverrideProps(overrides, "Roleoption2")}
         ></option>
       </SelectField>
+      <TextField
+        label="Phone number"
+        isRequired={false}
+        isReadOnly={false}
+        type="tel"
+        value={PhoneNumber}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              Name,
+              Email,
+              Avatar,
+              Role,
+              PhoneNumber: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.PhoneNumber ?? value;
+          }
+          if (errors.PhoneNumber?.hasError) {
+            runValidationTasks("PhoneNumber", value);
+          }
+          setPhoneNumber(value);
+        }}
+        onBlur={() => runValidationTasks("PhoneNumber", PhoneNumber)}
+        errorMessage={errors.PhoneNumber?.errorMessage}
+        hasError={errors.PhoneNumber?.hasError}
+        {...getOverrideProps(overrides, "PhoneNumber")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
