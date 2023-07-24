@@ -11,7 +11,7 @@
 */
 
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Outlet } from "react-router-dom";
 import { Layout, Drawer, Affix } from "antd";
 import AuthFooter from "./AuthFooter";
 import AuthHeader from "./AuthHeader";
@@ -20,7 +20,7 @@ import { Auth } from "aws-amplify";
 
 const { Header: AntHeader, Content, Sider } = Layout;
 
-function AuthLayout({ children }) {
+function AuthLayout() {
   const [visible, setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
   const [sidenavColor, setSidenavColor] = useState("#1890ff");
@@ -32,6 +32,7 @@ function AuthLayout({ children }) {
   const handleSidenavColor = (color) => setSidenavColor(color);
   const handleFixedNavbar = (type) => setFixed(type);
 
+  let location = useLocation();
   let { pathname } = useLocation();
   pathname = pathname.replace("/", "");
 
@@ -43,16 +44,16 @@ function AuthLayout({ children }) {
     }
   }, [pathname]);
 
-  useEffect(()=>{
-    try{
-        Auth.currentAuthenticatedUser();
-        console.log("User Login");
-    }catch{
-        console.log("redirect");
-        navigator('/signin');
-
+  useEffect(() => {
+    try {
+      Auth.currentAuthenticatedUser().then((user) => {
+        console.log("User Login", user);
+      });
+    } catch (err) {
+      console.log("redirect");
+      navigator("/signin");
     }
-  }, []);
+  }, [location]);
 
   return (
     <Layout
@@ -132,8 +133,9 @@ function AuthLayout({ children }) {
             />
           </AntHeader>
         )}
-        <Content className="content-ant">{children}</Content>
-        <AuthFooter />
+        <Content>
+          <Outlet />
+        </Content>
       </Layout>
     </Layout>
   );

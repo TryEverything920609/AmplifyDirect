@@ -11,3 +11,157 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+td.ant-table-cell {
+  text-align: center !important;
+}
+
+th.ant-table-cell {
+  text-align: center !important;
+}
+
+span.ant-table-column-title {
+  text-align: center !important;
+}
+
+p {
+  margin-bottom: 0 !important;
+}
+
+.ant-table-tbody>tr>td,
+.ant-table-thead>tr>th {
+  white-space: normal !important;
+}
+
+.css-1yf81sb {
+  background-color: rgb(255, 255, 255);
+  color: rgb(52, 49, 76);
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  overflow: hidden;
+  border-radius: 8px;
+  padding: 24px;
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 3px 3px -2px, rgba(0, 0, 0, 0.04) 0px 3px 4px 0px, rgba(0, 0, 0, 0.04) 0px 1px 8px 0px !important;
+}
+
+.css-jz5wf9 {
+  top: 0px;
+  left: 0px;
+  height: 125px;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  background-color: rgb(198, 211, 237);
+}
+
+.css-12g6phz {
+  z-index: 1;
+  margin-top: 55px;
+  position: relative;
+}
+
+.css-71p4a3 {
+  -webkit-box-pack: center;
+  justify-content: center;
+  display: flex;
+}
+
+.css-ndkmmt {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.css-h5i7f3 {
+  width: 100px;
+  height: 100px;
+  margin: auto;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.css-1mupj9l {
+  display: flex;
+  flex-flow: row wrap;
+  -webkit-box-pack: center;
+  place-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  position: absolute;
+  box-sizing: border-box;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 0.75rem;
+  min-width: 20px;
+  line-height: 1;
+  padding: 0px 6px;
+  height: 20px;
+  border-radius: 10px;
+  z-index: 1;
+  transition: transform 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  bottom: 14%;
+  right: 14%;
+  transform: scale(1) translate(50%, 50%);
+  transform-origin: 100% 100%;
+}
+
+.css-ndkmmt .MuiBadge-badge {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: rgb(25, 118, 210);
+  box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px;
+}
+
+
+.css-1yxmbwk {
+  display: inline-flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  background-color: transparent;
+  outline: 0px;
+  border: 0px;
+  margin: 0px;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  appearance: none;
+  text-decoration: none;
+  text-align: center;
+  flex: 0 0 auto;
+  font-size: 1.5rem;
+  padding: 8px;
+  border-radius: 50%;
+  overflow: visible;
+  color: rgba(0, 0, 0, 0.54);
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+
+.css-1hb43cw {
+  user-select: none;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  fill: currentcolor;
+  flex-shrink: 0;
+  transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+}
+
+.css-w0pj6f {
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+  inset: 0px;
+  border-radius: inherit;
+}

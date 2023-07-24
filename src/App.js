@@ -5,11 +5,11 @@ import { useRoutes } from "react-router-dom";
 import AppRoutes from "./AppRoutes";
 import { Auth, DataStore, Hub } from "aws-amplify";
 import { UserProfileList, UserTypeList } from './models';
-import { UserContext } from "./context/AuthContext";
 
 const App = () => {
 
-  const pages = useRoutes(AppRoutes);  
+  const pages = useRoutes(AppRoutes);
+  const UserContext = createContext();  
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const App = () => {
   useEffect(() => saveUser(), [user]);
 
   return(
-    <UserContext.Provider value={user}>{ pages }</UserContext.Provider>
+    <UserContext.Provider>{pages}</UserContext.Provider>
   )
 }
 

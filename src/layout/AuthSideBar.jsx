@@ -5,13 +5,11 @@ import { MdOutlineSms } from'react-icons/md';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { LuPhoneCall } from 'react-icons/lu';
 import { IoSettingsOutline } from 'react-icons/io5';
-import { UserContext } from '../context/AuthContext';
 import { DashboardTwoTone, PhoneTwoTone, UserOutlined } from '@ant-design/icons';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import logo from '../assets/images/directdial.png';
 
 const AuthSideBar = ({ color }) => {
-    const { user } = useContext(UserContext) || {};
     const [ collapsed, setCollapsed] = useState(false);
     const { pathname } = useLocation();
 
@@ -27,10 +25,6 @@ const AuthSideBar = ({ color }) => {
     ]
     const User = [];
     const SuperVisor = [];
-
-    useEffect(()=>{
-        console.log(user);
-    }, []);
 
     return (
         <>

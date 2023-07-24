@@ -32,14 +32,16 @@ import {
   StarOutlined,
   TwitterOutlined,
   FacebookFilled,
-  UserOutlined
+  UserOutlined,
 } from "@ant-design/icons";
 
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { LogoutOutlined } from '@ant-design/icons';
+import { LogoutOutlined } from "@ant-design/icons";
 import { Auth } from "aws-amplify";
-import avtar from '../assets/images/team-2.jpg';
+import avtar from "../assets/images/team-2.jpg";
+import defaultImage from "../assets/images/001-man.svg";
+
 const ButtonContainer = styled.div`
   .ant-btn-primary {
     background-color: #1890ff;
@@ -251,8 +253,6 @@ const setting = [
   </svg>,
 ];
 
-
-
 function AuthHeader({
   placement,
   name,
@@ -275,29 +275,29 @@ function AuthHeader({
 
   const items = [
     {
-        key: '1',
-        label: 'Profile',
-        icon: <UserOutlined/>,
+      key: "1",
+      label: "Profile",
+      icon: <UserOutlined />,
     },
     {
-        key: '2',
-        label: 'Sign Out',
-        icon: <LogoutOutlined />,
-    }
-  ]
+      key: "2",
+      label: "Sign Out",
+      icon: <LogoutOutlined />,
+    },
+  ];
 
-  const handleMenuClick= (e) => {
-    if(e.key === '1'){
-        navigator('/profile');
+  const handleMenuClick = (e) => {
+    if (e.key === "1") {
+      navigator("/profile");
     }
-    if(e.key === '2'){
-        Auth.signOut();
+    if (e.key === "2") {
+      Auth.signOut();
     }
-  }
+  };
 
   const handleOpenChange = (flag) => {
     setOpen(flag);
-  }
+  };
 
   return (
     <>
@@ -454,13 +454,13 @@ function AuthHeader({
           </Drawer>
           <Dropdown
             menu={{
-                items,
-                onClick: handleMenuClick,
+              items,
+              onClick: handleMenuClick,
             }}
             onOpenChange={handleOpenChange}
-            open = {open}
+            open={open}
           >
-            <Avatar icon={<UserOutlined/>}></Avatar>
+            <Avatar src={defaultImage}></Avatar>
           </Dropdown>
           <Input
             className="header-search"

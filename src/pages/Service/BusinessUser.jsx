@@ -1,13 +1,7 @@
-import { Auth } from "aws-amplify";
-import { useEffect } from "react";
+import { Auth, DataStore } from "aws-amplify";
+import { useState, useMemo, useEffect } from "react";
+import { Card, Input, Button, Table } from "antd";
+
 export default function BusinessUser() {
-    useEffect(()=>{
-        try{
-            Auth.currentAuthenticatedUser();
-            console.log("User Login");
-        }catch{
-            console.log("redirect");
-            navigator('/signin');
-        }
-      }, []);
+
 }

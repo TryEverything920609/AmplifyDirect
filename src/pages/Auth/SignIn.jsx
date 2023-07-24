@@ -15,13 +15,12 @@ import {
 import { Link } from 'react-router-dom';
 import { Auth, DataStore } from 'aws-amplify';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
-import { UserContext } from '../../context/AuthContext';
 const { Title } = Typography;
 const { Content } = Layout;
 
 function SignIn() {
     
-    const { user } = useContext(UserContext);
+    const [data, setData] = useState([]);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     
@@ -34,11 +33,7 @@ function SignIn() {
         }
     }
 
-    useEffect(() => {
-        console.log('Context', user);
-    }, [user]);
-
-    return (
+    return (        
         <>
             <Layout className='layout-default ant-layout layout-sign-up'>
                 <Content className='p-0'>
