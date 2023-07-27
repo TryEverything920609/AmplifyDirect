@@ -4,7 +4,7 @@ import { schema } from './schema';
 
 const UserTypeList = {
   "ADMIN": "ADMIN",
-  "OWNER": "OWNER",
+  "SUPERVISOR": "SUPERVISOR",
   "USER": "USER"
 };
 
@@ -22,9 +22,11 @@ const ServiceType = {
   "DEPOSIT": "DEPOSIT"
 };
 
-const { VoiceMessageList, WebFormList, UserProfileList, BillingList, CallLogList, SMSlogList, BusinessUserList, StateCodeList, FreeNumberList, ServiceList, BusinessUserListFreeNumberList, BusinessUserListStateCodeList } = initSchema(schema);
+const { RoleManageList, PermissionList, VoiceMessageList, WebFormList, UserProfileList, BillingList, CallLogList, SMSlogList, BusinessUserList, StateCodeList, FreeNumberList, ServiceList, BusinessUserListFreeNumberList, BusinessUserListStateCodeList } = initSchema(schema);
 
 export {
+  RoleManageList,
+  PermissionList,
   VoiceMessageList,
   WebFormList,
   UserProfileList,

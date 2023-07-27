@@ -228,8 +228,8 @@ export default function VoiceMessageListUpdateForm(props) {
           {...getOverrideProps(overrides, "untitledfieldoption0")}
         ></option>
         <option
-          children="Owner"
-          value="OWNER"
+          children="Supervisor"
+          value="SUPERVISOR"
           {...getOverrideProps(overrides, "untitledfieldoption1")}
         ></option>
         <option

@@ -194,12 +194,12 @@ export default function States() {
           Add
         </Button>
       </div>
-      <div>
+      <div className="table-responsive">
         <Table
           columns={column}
           dataSource={search ? searchData : tableData}
           size="middle"
-          scroll={{ x: 200 }}
+          className="ant-border-space"
         />
       </div>
       <Modal

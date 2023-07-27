@@ -9,8 +9,9 @@ import Profile from "./pages/Profile/Profile";
 import Setting from "./pages/Service/Setting";
 import SmsLog from "./pages/Service/SmsLog";
 import States from "./pages/Service/States";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
 import TollFreeNumbers from "./pages/Service/TollFreeNumbers";
-
+import UserRole from "./pages/Service/UserRole";
 const AppRoutes = [
   {
     path: "/signin",
@@ -19,6 +20,10 @@ const AppRoutes = [
   {
     path: "/signup",
     element: <SignUp />,
+  },
+  {
+    path: "/forgot",
+    element: <ForgotPassword />,
   },
   {
     path: "/",
@@ -59,6 +64,10 @@ const AppRoutes = [
       {
         path: "/profile",
         element: <Profile />,
+      },
+      {
+        path: "/userrole",
+        element: <UserRole />,
       },
     ],
   },

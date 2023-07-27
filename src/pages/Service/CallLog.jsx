@@ -131,11 +131,12 @@ export default function CallLog() {
             style={{ width: "25%", minWidth: "200px" }}
           />
         </div>
-        <div>
+        <div className="table-responsive">
           <Table
             columns={column}
             dataSource={search ? searchData : tableData}
             size="middle"
+            className="ant-border-space"
           />
         </div>
       </Card>

@@ -19,7 +19,10 @@ const TwostepPage = () => {
           </div>
         }
       >
-        <Input.Password placeholder="Enter Current Password" />
+        <Input.Password
+          placeholder="Enter Current Password"
+          style={{ marginBottom: "10px" }}
+        />
         <Button type="primary">Save Changes</Button>
       </Card>
     </div>

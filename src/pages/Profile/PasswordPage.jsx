@@ -1,22 +1,27 @@
 import { Auth } from "aws-amplify";
 import { useEffect, useState } from "react";
-import {
-  Tabs,
-  Row,
-  Col,
-  Card,
-  Button,
-  List,
-  Descriptions,
-  Avatar,
-  Radio,
-  Switch,
-  Upload,
-  message,
-  Form,
-  Input,
-} from "antd";
+import { Row, Col, Card, Button, message, Input } from "antd";
 const PasswordPage = () => {
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  async function ChangePassword() {
+    if (newPassword === confirmPassword) {
+      try {
+        const user = await Auth.currentAuthenticatedUser();
+        const data = await Auth.changePassword(user, password, newPassword);
+        console.log(data);
+        message.success("Reset password successfully");
+      } catch (error) {
+        console.log(error);
+        message.error(error.message);
+      }
+    } else {
+      message.error("New password and confirm password do not match");
+    }
+  }
+
   return (
     <div>
       <Card title="Password Setting">
@@ -24,14 +29,20 @@ const PasswordPage = () => {
           <Col span={24} md={12}>
             <Input.Password
               placeholder="Cureent Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               style={{ marginBottom: "15px" }}
             />
             <Input.Password
               placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
               style={{ marginBottom: "10px" }}
             />
             <Input.Password
               placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               style={{ marginBottom: "10px" }}
             />
           </Col>
@@ -145,7 +156,9 @@ const PasswordPage = () => {
               </div>
             </div>
           </Col>
-          <Button>Change Password</Button>
+          <Button type="primary" onClick={() => ChangePassword()}>
+            Change Password
+          </Button>
         </Row>
       </Card>
     </div>

@@ -15,6 +15,12 @@
       "auth": {
         "AmplifyDirect": {}
       },
+      "function": {
+        "sendSMSfunc": {
+          "deploymentBucketName": "amplify-amplify092c04bc7e4b4-staging-203148-deployment",
+          "s3Key": "amplify-builds/sendSMSfunc-4b324a4f774b346a6b4f-build.zip"
+        }
+      },
       "storage": {
         "s3amplifydirectstorage5389cf49": {}
       }

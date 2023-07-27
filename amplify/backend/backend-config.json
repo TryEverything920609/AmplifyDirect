@@ -59,6 +59,31 @@
       "service": "Cognito"
     }
   },
+  "function": {
+    "sendSMSfunc": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_sendSMSfunc_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendSMSfunc"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendSMSfunc_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendSMSfunc"
+        }
+      ]
+    }
+  },
   "storage": {
     "s3amplifydirectstorage5389cf49": {
       "dependsOn": [],

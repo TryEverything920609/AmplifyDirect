@@ -4,7 +4,7 @@ import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@a
 
 export enum UserTypeList {
   ADMIN = "ADMIN",
-  OWNER = "OWNER",
+  SUPERVISOR = "SUPERVISOR",
   USER = "USER"
 }
 
@@ -23,6 +23,72 @@ export enum ServiceType {
 }
 
 
+
+type EagerRoleManageList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<RoleManageList, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly RoleName?: UserTypeList | keyof typeof UserTypeList | null;
+  readonly Permission?: (PermissionList | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyRoleManageList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<RoleManageList, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly RoleName?: UserTypeList | keyof typeof UserTypeList | null;
+  readonly Permission: AsyncCollection<PermissionList>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type RoleManageList = LazyLoading extends LazyLoadingDisabled ? EagerRoleManageList : LazyRoleManageList
+
+export declare const RoleManageList: (new (init: ModelInit<RoleManageList>) => RoleManageList) & {
+  copyOf(source: RoleManageList, mutator: (draft: MutableModel<RoleManageList>) => MutableModel<RoleManageList> | void): RoleManageList;
+}
+
+type EagerPermissionList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<PermissionList, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly icon?: string | null;
+  readonly label?: string | null;
+  readonly to?: string | null;
+  readonly key?: number | null;
+  readonly rolemanagelistID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyPermissionList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<PermissionList, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly icon?: string | null;
+  readonly label?: string | null;
+  readonly to?: string | null;
+  readonly key?: number | null;
+  readonly rolemanagelistID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type PermissionList = LazyLoading extends LazyLoadingDisabled ? EagerPermissionList : LazyPermissionList
+
+export declare const PermissionList: (new (init: ModelInit<PermissionList>) => PermissionList) & {
+  copyOf(source: PermissionList, mutator: (draft: MutableModel<PermissionList>) => MutableModel<PermissionList> | void): PermissionList;
+}
 
 type EagerVoiceMessageList = {
   readonly [__modelMeta__]: {

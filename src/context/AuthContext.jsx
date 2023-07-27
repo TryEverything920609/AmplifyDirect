@@ -1,3 +1,14 @@
-import { createContext, useState } from "react";
-export const AuthContext = createContext();
-
+import { createContext } from "react";
+const AuthContext = createContext({
+  email: "",
+  setEmail: () => {},
+  name: "",
+  setName: () => {},
+  phone: "",
+  setPhone: () => {},
+  role: "",
+  setRol: () => {},
+  avatar: "",
+  setAvatar: () => {},
+});
+export default AuthContext;

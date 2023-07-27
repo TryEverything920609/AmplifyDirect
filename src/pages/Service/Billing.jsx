@@ -1,4 +1,3 @@
-import { Auth } from "aws-amplify";
 import { useEffect, useMemo, useState } from "react";
 import { Table, Tag, Card, Input } from "antd";
 import { DataStore } from "aws-amplify";
@@ -117,6 +116,10 @@ function Billing() {
   useEffect(() => {
     setData();
   }, [search, tableData]);
+
+  useEffect(() => {
+    getTableData();
+  }, []);
   console.log("Hello");
   return (
     <>
@@ -135,11 +138,12 @@ function Billing() {
             style={{ width: "25%", minWidth: "200px" }}
           />
         </div>
-        <div>
+        <div className="table-responsive">
           <Table
             columns={column}
             dataSource={search ? searchData : tableData}
             size="middle"
+            className="ant-border-space"
           />
         </div>
       </Card>

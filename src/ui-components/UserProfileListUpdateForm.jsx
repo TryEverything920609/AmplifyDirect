@@ -270,8 +270,8 @@ export default function UserProfileListUpdateForm(props) {
           {...getOverrideProps(overrides, "Roleoption0")}
         ></option>
         <option
-          children="Owner"
-          value="OWNER"
+          children="Supervisor"
+          value="SUPERVISOR"
           {...getOverrideProps(overrides, "Roleoption1")}
         ></option>
         <option

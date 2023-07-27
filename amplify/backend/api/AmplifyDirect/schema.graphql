@@ -1,6 +1,21 @@
+type RoleManageList @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  RoleName: UserTypeList
+  Permission: [PermissionList] @hasMany(indexName: "byRoleManageList", fields: ["id"])
+}
+
+type PermissionList @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  icon: String
+  label: String
+  to: String
+  key: Int
+  rolemanagelistID: ID! @index(name: "byRoleManageList")
+}
+
 enum UserTypeList {
   ADMIN
-  OWNER
+  SUPERVISOR
   USER
 }
 

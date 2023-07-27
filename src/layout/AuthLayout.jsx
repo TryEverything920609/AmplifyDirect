@@ -16,14 +16,16 @@ import { Layout, Drawer, Affix } from "antd";
 import AuthFooter from "./AuthFooter";
 import AuthHeader from "./AuthHeader";
 import AuthSideBar from "./AuthSideBar";
+import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 
 const { Header: AntHeader, Content, Sider } = Layout;
 
 function AuthLayout() {
+  const navigator = useNavigate();
   const [visible, setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
-  const [sidenavColor, setSidenavColor] = useState("#1890ff");
+  const [sidenavColor, setSidenavColor] = useState("#52c41a");
   const [sidenavType, setSidenavType] = useState("transparent");
   const [fixed, setFixed] = useState(false);
 
@@ -46,9 +48,13 @@ function AuthLayout() {
 
   useEffect(() => {
     try {
-      Auth.currentAuthenticatedUser().then((user) => {
-        console.log("User Login", user);
-      });
+      Auth.currentAuthenticatedUser()
+        .then((user) => {
+          console.log("User Login", user);
+        })
+        .catch((err) => {
+          navigator("/signin");
+        });
     } catch (err) {
       console.log("redirect");
       navigator("/signin");

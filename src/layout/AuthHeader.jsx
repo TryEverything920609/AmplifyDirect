@@ -10,7 +10,7 @@
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import {
   Row,
@@ -38,9 +38,10 @@ import {
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { LogoutOutlined } from "@ant-design/icons";
-import { Auth } from "aws-amplify";
-import avtar from "../assets/images/team-2.jpg";
-import defaultImage from "../assets/images/001-man.svg";
+import AuthContext from "../context/AuthContext";
+import { Auth, Storage } from "aws-amplify";
+import avtar from "../asset/images/team-2.jpg";
+import defaultImage from "../asset/images/001-man.svg";
 
 const ButtonContainer = styled.div`
   .ant-btn-primary {
@@ -255,18 +256,43 @@ const setting = [
 
 function AuthHeader({
   placement,
-  name,
+  pathname,
   subName,
   onPress,
   handleSidenavColor,
   handleSidenavType,
   handleFixedNavbar,
 }) {
+  const { name, setName } = useContext(AuthContext);
+  const { email, setEmail } = useContext(AuthContext);
+  const { phone, setPhone } = useContext(AuthContext);
+  const { avatar, setAvatar } = useContext(AuthContext);
   const navigator = useNavigate();
   const { Title, Text } = Typography;
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [sidenavType, setSidenavType] = useState("transparent");
+  const [imageUrl, setImageUrl] = useState("");
+
+  useEffect(() => {
+    console.log(
+      "name ",
+      name,
+      "email ",
+      email,
+      "phone ",
+      phone,
+      "avatar ",
+      avatar
+    );
+    if (avatar) {
+      Storage.get(avatar, { level: "public" })
+        .then((url) => {
+          setImageUrl(url);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [name, email, phone, avatar]);
 
   useEffect(() => window.scrollTo(0, 0));
 
@@ -291,7 +317,9 @@ function AuthHeader({
       navigator("/profile");
     }
     if (e.key === "2") {
+      console.log("Sign Out");
       Auth.signOut();
+      navigator("/signin");
     }
   };
 
@@ -311,7 +339,7 @@ function AuthHeader({
               <NavLink to="/">Pages</NavLink>
             </Breadcrumb.Item>
             <Breadcrumb.Item style={{ textTransform: "capitalize" }}>
-              {name.replace("/", "")}
+              {pathname ? pathname.replace("/", "") : ""}
             </Breadcrumb.Item>
           </Breadcrumb>
           <div className="ant-page-header-heading">
@@ -319,7 +347,7 @@ function AuthHeader({
               className="ant-page-header-heading-title"
               style={{ textTransform: "capitalize" }}
             >
-              {subName.replace("/", "")}
+              {subName ? subName.replace("/", "") : ""}
             </span>
           </div>
         </Col>
@@ -460,7 +488,7 @@ function AuthHeader({
             onOpenChange={handleOpenChange}
             open={open}
           >
-            <Avatar src={defaultImage}></Avatar>
+            <Avatar src={avatar ? imageUrl : defaultImage}></Avatar>
           </Dropdown>
           <Input
             className="header-search"

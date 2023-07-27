@@ -147,20 +147,22 @@ export default function TollFreeNumbers() {
         >
           <Input
             label="Search"
+            placeholder="Search"
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
             icon={<SearchOutlined />}
-            style={{ width: 200 }}
+            style={{ width: 200, marginRight: "10px" }}
           />
-          <Button color="primary" onClick={() => setIsModalOpen2(true)}>
+          <Button type="primary" onClick={() => setIsModalOpen2(true)}>
             Add Toll FreeNumber
           </Button>
         </div>
-        <div>
+        <div className="table-responseive">
           <Table
             columns={columns}
             dataSource={search ? searchData : TableData}
             size="middle"
+            className="ant-border-space"
           />
         </div>
       </Card>
@@ -179,7 +181,20 @@ export default function TollFreeNumbers() {
         okButtonProps={{ style: { backgroundColor: "#1677ff" } }}
       >
         <Form>
-          <Form.Item label="Phone Number">
+          <Form.Item
+            label="Phone Number"
+            rules={[
+              {
+                required: true,
+                message: "Please input your phone number!",
+              },
+              {
+                pattern:
+                  /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+                message: "Please enter a valid phone number!",
+              },
+            ]}
+          >
             <Input
               placeholder="Please Enter Free Phonenumber"
               value={number}
