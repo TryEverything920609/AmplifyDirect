@@ -54,9 +54,14 @@ const App = () => {
     getUser().then((userData) => setUser(userData));
   }, []);
 
-  function getUser() {
+  async function getUser() {
     return Auth.currentAuthenticatedUser()
-      .then((userData) => userData)
+      .then(async (userData) => {
+        const data = await Auth.getPreferredMFA(userData, {
+          bypassCache: false,
+        });
+        console.log("Current preferred MFA type is: " + data);
+      })
       .catch(() => console.log("Not signed in"));
   }
 

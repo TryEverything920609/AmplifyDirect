@@ -12,6 +12,7 @@ import {
   Input,
   Checkbox,
   message,
+  Modal,
 } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { Auth, DataStore } from "aws-amplify";
@@ -23,19 +24,36 @@ function SignIn() {
   const navigator = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [user, setUser] = useState(null);
 
   const login = async () => {
     console.log(email, password, "Email, password");
     try {
       await Auth.signIn(email, password).then((user) => {
         console.log(user, "user");
-        message.success("Signed in successfully");
-        navigator("/dashboard");
+        setUser(user);
+        if (user?.challengeName === "SMS_MFA") {
+          setShowModal(true);
+          message.success("MFA code has been sent to your mobile number");
+        } else {
+          message.success("Signed In successfully");
+          navigator("/dashboard");
+        }
       });
     } catch (error) {
       message.error("Please check your Email and Password");
       console.log("error sign in", error);
     }
+  };
+
+  const handleConfirm = async () => {
+    await Auth.confirmSignIn(user, code, "SMS_MFA").then((loggedUser) => {
+      message.success("Signed In successfully");
+      setShowModal(false);
+      navigator("/dashboard");
+    });
   };
 
   return (
@@ -162,6 +180,18 @@ function SignIn() {
               </Link>
             </p>
           </Card>
+          <Modal
+            title="Confirm Sign Up"
+            open={showModal}
+            onOk={handleConfirm}
+            onCancel={() => setShowModal(false)}
+          >
+            <Input
+              placeholder="Please Input Confirm Code"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+            />
+          </Modal>
         </Content>
       </Layout>
     </>

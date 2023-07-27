@@ -22,6 +22,17 @@ const PasswordPage = () => {
     }
   }
 
+  useEffect(() => {
+    Auth.currentAuthenticatedUser()
+      .then(async (userData) => {
+        const data = await Auth.getPreferredMFA(userData, {
+          bypassCache: false,
+        });
+        console.log("Current preferred MFA type is: " + data);
+      })
+      .catch(() => console.log("Not signed in"));
+  }, []);
+
   return (
     <div>
       <Card title="Password Setting">

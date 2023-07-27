@@ -26,6 +26,7 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
+  const [phone, setPhone] = useState("");
   const [showModal, setShowModal] = useState(false);
 
   const handleOk = async () => {
@@ -53,6 +54,7 @@ function SignUp() {
         attributes: {
           email: email,
           name: name,
+          phone_number: phone,
         },
       }).then((user) => {
         console.log("Saving");
@@ -61,6 +63,7 @@ function SignUp() {
             Name: name,
             Email: email,
             Role: UserTypeList.USER,
+            PhoneNumber: phone,
           })
         ).then(() => console.log("Success Saving"));
       });
@@ -167,6 +170,27 @@ function SignUp() {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                />
+              </Form.Item>
+
+              <Form.Item
+                name="Phone Number"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your phone number!",
+                  },
+                  {
+                    pattern:
+                      /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+                    message: "Please enter a valid phone number!",
+                  },
+                ]}
+              >
+                <Input
+                  placeholder="Please Input Your Phone Number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </Form.Item>
 

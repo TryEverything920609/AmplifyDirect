@@ -3,16 +3,17 @@
   "cognitoConfig": {
     "identityPoolName": "testAuthIdentityPool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "amplif415cedc2",
+    "resourceNameTruncated": "amplif9b5e4795",
     "userPoolName": "AmplifyDirect",
     "autoVerifiedAttributes": [
       "email"
     ],
-    "mfaConfiguration": "OFF",
+    "mfaConfiguration": "OPTIONAL",
     "mfaTypes": [
-      "SMS Text Message"
+      "SMS Text Message",
+      "TOTP"
     ],
-    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsAuthenticationMessage": "Your login code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Verification code: {####}",
     "emailVerificationMessage": "Verification code: {####}",
@@ -33,9 +34,9 @@
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [],
     "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "Amplif415cedc2_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "Amplif9b5e4795_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "415cedc2",
+    "sharedId": "9b5e4795",
     "resourceName": "AmplifyDirect",
     "authSelections": "identityPoolAndUserPool",
     "serviceName": "Cognito",
@@ -50,7 +51,7 @@
     "thirdPartyAuth": false,
     "authProviders": [],
     "hostedUI": true,
-    "hostedUIDomainName": "ey4tui3uo9b2",
+    "hostedUIDomainName": "645mv7w3isul",
     "authProvidersUserPool": [
       "Google",
       "LoginWithAmazon"
@@ -58,20 +59,6 @@
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"name\":\"name\",\"username\":\"sub\"}},{\"ProviderName\":\"LoginWithAmazon\",\"authorize_scopes\":\"profile profile:user_id\",\"AttributeMapping\":{\"email\":\"email\",\"name\":\"name\",\"username\":\"user_id\"}}]",
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/dashboard\",\"https://main.d3pkie02zxxtk4.amplifyapp.com/dashboard\"],\"LogoutURLs\":[\"http://localhost:3000/signin\",\"https://main.d3pkie02zxxtk4.amplifyapp.com/signin\"]}",
     "usernameCaseSensitive": false,
-    "useEnabledMfas": true,
-    "authRoleArn": {
-      "Fn::GetAtt": [
-        "AuthRole",
-        "Arn"
-      ]
-    },
-    "unauthRoleArn": {
-      "Fn::GetAtt": [
-        "UnauthRole",
-        "Arn"
-      ]
-    },
-    "breakCircularDependency": true,
-    "dependsOn": []
+    "useEnabledMfas": true
   }
 }

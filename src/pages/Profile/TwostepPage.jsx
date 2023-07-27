@@ -1,6 +1,36 @@
-import { Card, Switch, Button, Input } from "antd";
-
+import { Card, Switch, Button } from "antd";
+import { Auth } from "aws-amplify";
+import { useEffect, useState } from "react";
 const TwostepPage = () => {
+  const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    Auth.currentAuthenticatedUser()
+      .then(async (userData) => {
+        const data = await Auth.getPreferredMFA(userData, {
+          bypassCache: false,
+        });
+        console.log("Current preferred MFA type is: " + data);
+        if (data === "NOMFA") setChecked(false);
+      })
+      .catch(() => console.log("Not signed in"));
+  }, []);
+
+  const setMFAType = async () => {
+    console.log(checked);
+    try {
+      if (checked) {
+        const user = await Auth.currentAuthenticatedUser();
+        await Auth.setPreferredMFA(user, "SMS");
+      } else {
+        const user = await Auth.currentAuthenticatedUser();
+        await Auth.setPreferredMFA(user, "NOMFA");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div>
       <Card
@@ -8,7 +38,7 @@ const TwostepPage = () => {
           <div>
             <div>
               <h5>Two-step verification</h5>
-              <Switch />
+              <Switch onChange={() => setChecked(!checked)} checked={checked} />
             </div>
             <div>
               <p>
@@ -19,11 +49,9 @@ const TwostepPage = () => {
           </div>
         }
       >
-        <Input.Password
-          placeholder="Enter Current Password"
-          style={{ marginBottom: "10px" }}
-        />
-        <Button type="primary">Save Changes</Button>
+        <Button type="primary" onClick={() => setMFAType()}>
+          Save Changes
+        </Button>
       </Card>
     </div>
   );
