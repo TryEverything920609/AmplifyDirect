@@ -65,7 +65,7 @@ function SignUp() {
             Role: UserTypeList.USER,
             PhoneNumber: phone,
           })
-        ).then(() => console.log("Success Saving"));
+        ).then(() => console.log("Success Saving")).catch((err) => console.log("Saving Error"));
       });
 
       setShowModal(true);
