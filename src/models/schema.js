@@ -23,7 +23,7 @@ export const schema = {
                     "name": "Permission",
                     "isArray": true,
                     "type": {
-                        "model": "PermissionList"
+                        "model": "RoleManageListPermissionList"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -31,7 +31,7 @@ export const schema = {
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
-                            "rolemanagelistID"
+                            "roleManageList"
                         ]
                     }
                 },
@@ -115,12 +115,21 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "rolemanagelistID": {
-                    "name": "rolemanagelistID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
+                "rolemanagelists": {
+                    "name": "rolemanagelists",
+                    "isArray": true,
+                    "type": {
+                        "model": "RoleManageListPermissionList"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "permissionList"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -145,15 +154,6 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byRoleManageList",
-                        "fields": [
-                            "rolemanagelistID"
-                        ]
-                    }
                 },
                 {
                     "type": "auth",
@@ -1094,6 +1094,104 @@ export const schema = {
                 }
             ]
         },
+        "RoleManageListPermissionList": {
+            "name": "RoleManageListPermissionList",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "roleManageListId": {
+                    "name": "roleManageListId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "permissionListId": {
+                    "name": "permissionListId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "roleManageList": {
+                    "name": "roleManageList",
+                    "isArray": false,
+                    "type": {
+                        "model": "RoleManageList"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "roleManageListId"
+                        ]
+                    }
+                },
+                "permissionList": {
+                    "name": "permissionList",
+                    "isArray": false,
+                    "type": {
+                        "model": "PermissionList"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "permissionListId"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "RoleManageListPermissionLists",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byRoleManageList",
+                        "fields": [
+                            "roleManageListId"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byPermissionList",
+                        "fields": [
+                            "permissionListId"
+                        ]
+                    }
+                }
+            ]
+        },
         "BusinessUserListFreeNumberList": {
             "name": "BusinessUserListFreeNumberList",
             "fields": {
@@ -1321,5 +1419,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "7f393e2c181c8d139a63805a2bde8953"
+    "version": "314ee4d3855fed04b13413e272c78d9c"
 };

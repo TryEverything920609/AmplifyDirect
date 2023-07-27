@@ -7,6 +7,8 @@
 export { default as studioTheme } from "./studioTheme";
 export { default as RoleManageListCreateForm } from "./RoleManageListCreateForm";
 export { default as RoleManageListUpdateForm } from "./RoleManageListUpdateForm";
+export { default as PermissionListCreateForm } from "./PermissionListCreateForm";
+export { default as PermissionListUpdateForm } from "./PermissionListUpdateForm";
 export { default as VoiceMessageListCreateForm } from "./VoiceMessageListCreateForm";
 export { default as VoiceMessageListUpdateForm } from "./VoiceMessageListUpdateForm";
 export { default as WebFormListCreateForm } from "./WebFormListCreateForm";

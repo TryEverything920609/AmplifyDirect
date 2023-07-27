@@ -12,6 +12,7 @@ import States from "./pages/Service/States";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import TollFreeNumbers from "./pages/Service/TollFreeNumbers";
 import UserRole from "./pages/Service/UserRole";
+import LandingPage from "./pages/LandingPage";
 const AppRoutes = [
   {
     path: "/signin",
@@ -24,6 +25,10 @@ const AppRoutes = [
   {
     path: "/forgot",
     element: <ForgotPassword />,
+  },
+  {
+    path: "/",
+    element: <LandingPage />,
   },
   {
     path: "/",

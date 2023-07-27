@@ -1,7 +1,7 @@
 type RoleManageList @model @auth(rules: [{allow: public}]) {
   id: ID!
   RoleName: UserTypeList
-  Permission: [PermissionList] @hasMany(indexName: "byRoleManageList", fields: ["id"])
+  Permission: [PermissionList] @manyToMany(relationName: "RoleManageListPermissionList")
 }
 
 type PermissionList @model @auth(rules: [{allow: public}]) {
@@ -10,7 +10,7 @@ type PermissionList @model @auth(rules: [{allow: public}]) {
   label: String
   to: String
   key: Int
-  rolemanagelistID: ID! @index(name: "byRoleManageList")
+  rolemanagelists: [RoleManageList] @manyToMany(relationName: "RoleManageListPermissionList")
 }
 
 enum UserTypeList {

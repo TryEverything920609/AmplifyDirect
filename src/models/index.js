@@ -22,7 +22,7 @@ const ServiceType = {
   "DEPOSIT": "DEPOSIT"
 };
 
-const { RoleManageList, PermissionList, VoiceMessageList, WebFormList, UserProfileList, BillingList, CallLogList, SMSlogList, BusinessUserList, StateCodeList, FreeNumberList, ServiceList, BusinessUserListFreeNumberList, BusinessUserListStateCodeList } = initSchema(schema);
+const { RoleManageList, PermissionList, VoiceMessageList, WebFormList, UserProfileList, BillingList, CallLogList, SMSlogList, BusinessUserList, StateCodeList, FreeNumberList, ServiceList, RoleManageListPermissionList, BusinessUserListFreeNumberList, BusinessUserListStateCodeList } = initSchema(schema);
 
 export {
   RoleManageList,
@@ -37,6 +37,7 @@ export {
   StateCodeList,
   FreeNumberList,
   ServiceList,
+  RoleManageListPermissionList,
   BusinessUserListFreeNumberList,
   BusinessUserListStateCodeList,
   UserTypeList,
