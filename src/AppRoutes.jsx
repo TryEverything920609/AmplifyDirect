@@ -13,6 +13,7 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import TollFreeNumbers from "./pages/Service/TollFreeNumbers";
 import UserRole from "./pages/Service/UserRole";
 import LandingPage from "./pages/LandingPage";
+import Permission from "./pages/Service/Permission";
 const AppRoutes = [
   {
     path: "/signin",
@@ -37,6 +38,10 @@ const AppRoutes = [
       {
         path: "/dashboard",
         element: <Dashboard />,
+      },
+      {
+        path: "/permission",
+        element: <Permission />,
       },
       {
         path: "/tollfreenumber",
