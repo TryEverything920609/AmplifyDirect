@@ -25,12 +25,14 @@ import logo from "../asset/images/directdial.png";
 const AuthSideBar = ({ color }) => {
   const { role, setRole } = useContext(AuthContext);
   const [permissions, setPermissions] = useState([]);
-  const [sidebar, setSidebar] = useState([{
-    key: 1,
-    icon: <DashboardTwoTone />,
-    to: "/dashboard",
-    label: "Dashboard",
-    }]);
+  const [sidebar, setSidebar] = useState([
+    {
+      key: 1,
+      icon: <DashboardTwoTone />,
+      to: "/dashboard",
+      label: "Dashboard",
+    },
+  ]);
   const { pathname } = useLocation();
   const ICONS = {
     DashboardTwoTone: <DashboardTwoTone />,
@@ -47,32 +49,32 @@ const AuthSideBar = ({ color }) => {
   useEffect(() => {
     const fetchData = async () => {
       console.log("role", role);
-      const roleUser = await DataStore.query(RoleManageList, (c) =>
-        c.RoleName.eq(role)
+      await DataStore.query(RoleManageList, (c) => c.RoleName.eq(role)).then(
+        async (roleUser) => {
+          console.log("roleuser=>", roleUser);
+          await DataStore.query(PermissionListRoleManageList, (c) =>
+            c.roleManageListId.eq(roleUser[0].id)
+          ).then(async (table) => {
+            table.map(async (item) => {
+              await DataStore.query(PermissionList, (c) =>
+                c.id.eq(item.permissionListId)
+              ).then((item) => setPermissions((prev) => [...prev, item[0]]));
+            });
+          });
+        }
       );
-      console.log("roleUser", roleUser);
-      const table = await DataStore.query(PermissionListRoleManageList, (c) =>
-        c.roleManageListId.eq(roleUser[0].id)
-      );
-      
-      console.log("table", table);
-      setPermissions([]);
-      table.map( async (item) => {
-        await DataStore.query(PermissionList, (c) => c.id.eq(item.permissionListId)).then((item) => setPermissions((prev) => [...prev, item]));
-      });
+
       console.log("permissions", permissions);
       const side = [];
       permissions.map((item) => {
-        console.log("item", item);
+        console.log("Item", item);
         side.push({
-          label: item[0].label,
-          key: item[0].key,
-          icon: ICONS[item[0].icon],
-          to: item[0].to,
+          key: item.key,
+          icon: ICONS[item.icon],
+          to: item.to,
+          label: item.label,
         });
       });
-
-      console.log("Sidebar1 =>>>>>>", side);
       const sortside = side.sort((a, b) => a.key - b.key);
       setSidebar(sortside);
     };
