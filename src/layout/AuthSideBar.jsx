@@ -25,6 +25,7 @@ import logo from "../asset/images/directdial.png";
 const AuthSideBar = ({ color }) => {
   const { role, setRole } = useContext(AuthContext);
   const [permissions, setPermissions] = useState([]);
+  const [userRole, setUserRole] = useState();
   const [sidebar, setSidebar] = useState([
     {
       key: 1,
@@ -48,39 +49,54 @@ const AuthSideBar = ({ color }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("role", role);
-      await DataStore.query(RoleManageList, (c) => c.RoleName.eq(role)).then(
-        async (roleUser) => {
-          console.log("roleuser=>", roleUser);
-          await DataStore.query(PermissionListRoleManageList, (c) =>
-            c.roleManageListId.eq(roleUser[0].id)
-          ).then(async (table) => {
-            table.map(async (item) => {
-              await DataStore.query(PermissionList, (c) =>
-                c.id.eq(item.permissionListId)
-              ).then((item) => setPermissions((prev) => [...prev, item[0]]));
-            });
-          });
-        }
+      const user = await DataStore.query(RoleManageList, (c) =>
+        c.RoleName.eq(role)
       );
-
-      console.log("permissions", permissions);
-      const side = [];
-      permissions.map((item) => {
-        console.log("Item", item);
-        side.push({
-          key: item.key,
-          icon: ICONS[item.icon],
-          to: item.to,
-          label: item.label,
-        });
-      });
-      const sortside = side.sort((a, b) => a.key - b.key);
-      setSidebar(sortside);
+      setUserRole(user[0]);
     };
 
     fetchData();
   }, [role]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const permissions = await DataStore.query(
+        PermissionListRoleManageList,
+        (c) => c.roleManageListId.eq(userRole.id)
+      );
+      setPermissions(permissions);
+    };
+    fetchData();
+  }, [userRole]);
+
+  useEffect(() => {
+    const fetchData = () => {
+      const side = [];
+      permissions.map(async (permission) => {
+        const item = await DataStore.query(PermissionList, (c) =>
+          c.id.eq(permission.permissionListId)
+        );
+        console.log("The Item", item);
+        side = side.concat(item);
+      });
+      return side;
+    };
+
+    const side = fetchData();
+    const sidebarItem = [];
+    side.map((item) => {
+      console.log("Item", item);
+      sidebarItem.push({
+        key: item.key,
+        icon: ICONS[item.icon],
+        to: item.to,
+        label: item.label,
+      });
+    });
+    const sortside = sidebarItem.sort((a, b) => a.key - b.key);
+
+    setSidebar(sortside);
+  }, [permissions]);
 
   return (
     <>
