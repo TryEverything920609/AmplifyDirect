@@ -25,7 +25,12 @@ import logo from "../asset/images/directdial.png";
 const AuthSideBar = ({ color }) => {
   const { role, setRole } = useContext(AuthContext);
   const [permissions, setPermissions] = useState([]);
-  const [sidebar, setSidebar] = useState([]);
+  const [sidebar, setSidebar] = useState([{
+    key: 1,
+    icon: <DashboardTwoTone />,
+    to: "/dashboard",
+    label: "Dashboard",
+    }]);
   const { pathname } = useLocation();
   const ICONS = {
     DashboardTwoTone: <DashboardTwoTone />,
@@ -41,21 +46,24 @@ const AuthSideBar = ({ color }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log("role", role);
       const roleUser = await DataStore.query(RoleManageList, (c) =>
         c.RoleName.eq(role)
       );
+      console.log("roleUser", roleUser);
       const table = await DataStore.query(PermissionListRoleManageList, (c) =>
         c.roleManageListId.eq(roleUser[0].id)
       );
+      
+      console.log("table", table);
       setPermissions([]);
-      table.map(async (item) => {
-        const permission = await DataStore.query(PermissionList, (c) =>
-          c.id.eq(item.permissionListId)
-        );
-        setPermissions((prev) => [...prev, permission]);
+      table.map( async (item) => {
+        await DataStore.query(PermissionList, (c) => c.id.eq(item.permissionListId)).then((item) => setPermissions((prev) => [...prev, item]));
       });
+      console.log("permissions", permissions);
       const side = [];
       permissions.map((item) => {
+        console.log("item", item);
         side.push({
           label: item[0].label,
           key: item[0].key,
@@ -70,7 +78,7 @@ const AuthSideBar = ({ color }) => {
     };
 
     fetchData();
-  }, []);
+  }, [role]);
 
   return (
     <>
