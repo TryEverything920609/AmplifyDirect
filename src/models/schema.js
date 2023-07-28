@@ -23,7 +23,7 @@ export const schema = {
                     "name": "Permission",
                     "isArray": true,
                     "type": {
-                        "model": "RoleManageListPermissionList"
+                        "model": "PermissionListRoleManageList"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -115,11 +115,11 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "rolemanagelists": {
-                    "name": "rolemanagelists",
+                "Role": {
+                    "name": "Role",
                     "isArray": true,
                     "type": {
-                        "model": "RoleManageListPermissionList"
+                        "model": "PermissionListRoleManageList"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -1094,8 +1094,8 @@ export const schema = {
                 }
             ]
         },
-        "RoleManageListPermissionList": {
-            "name": "RoleManageListPermissionList",
+        "PermissionListRoleManageList": {
+            "name": "PermissionListRoleManageList",
             "fields": {
                 "id": {
                     "name": "id",
@@ -1166,7 +1166,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "RoleManageListPermissionLists",
+            "pluralName": "PermissionListRoleManageLists",
             "attributes": [
                 {
                     "type": "model",
@@ -1419,5 +1419,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "314ee4d3855fed04b13413e272c78d9c"
+    "version": "77a3fc7e51b5b8f12c950909607e2e7b"
 };

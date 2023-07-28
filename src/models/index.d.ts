@@ -31,7 +31,7 @@ type EagerRoleManageList = {
   };
   readonly id: string;
   readonly RoleName?: UserTypeList | keyof typeof UserTypeList | null;
-  readonly Permission?: (RoleManageListPermissionList | null)[] | null;
+  readonly Permission?: (PermissionListRoleManageList | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -43,7 +43,7 @@ type LazyRoleManageList = {
   };
   readonly id: string;
   readonly RoleName?: UserTypeList | keyof typeof UserTypeList | null;
-  readonly Permission: AsyncCollection<RoleManageListPermissionList>;
+  readonly Permission: AsyncCollection<PermissionListRoleManageList>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -64,7 +64,7 @@ type EagerPermissionList = {
   readonly label?: string | null;
   readonly to?: string | null;
   readonly key?: number | null;
-  readonly rolemanagelists?: (RoleManageListPermissionList | null)[] | null;
+  readonly Role?: (PermissionListRoleManageList | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -79,7 +79,7 @@ type LazyPermissionList = {
   readonly label?: string | null;
   readonly to?: string | null;
   readonly key?: number | null;
-  readonly rolemanagelists: AsyncCollection<RoleManageListPermissionList>;
+  readonly Role: AsyncCollection<PermissionListRoleManageList>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -450,9 +450,9 @@ export declare const ServiceList: (new (init: ModelInit<ServiceList>) => Service
   copyOf(source: ServiceList, mutator: (draft: MutableModel<ServiceList>) => MutableModel<ServiceList> | void): ServiceList;
 }
 
-type EagerRoleManageListPermissionList = {
+type EagerPermissionListRoleManageList = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<RoleManageListPermissionList, 'id'>;
+    identifier: ManagedIdentifier<PermissionListRoleManageList, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
@@ -464,9 +464,9 @@ type EagerRoleManageListPermissionList = {
   readonly updatedAt?: string | null;
 }
 
-type LazyRoleManageListPermissionList = {
+type LazyPermissionListRoleManageList = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<RoleManageListPermissionList, 'id'>;
+    identifier: ManagedIdentifier<PermissionListRoleManageList, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
@@ -478,10 +478,10 @@ type LazyRoleManageListPermissionList = {
   readonly updatedAt?: string | null;
 }
 
-export declare type RoleManageListPermissionList = LazyLoading extends LazyLoadingDisabled ? EagerRoleManageListPermissionList : LazyRoleManageListPermissionList
+export declare type PermissionListRoleManageList = LazyLoading extends LazyLoadingDisabled ? EagerPermissionListRoleManageList : LazyPermissionListRoleManageList
 
-export declare const RoleManageListPermissionList: (new (init: ModelInit<RoleManageListPermissionList>) => RoleManageListPermissionList) & {
-  copyOf(source: RoleManageListPermissionList, mutator: (draft: MutableModel<RoleManageListPermissionList>) => MutableModel<RoleManageListPermissionList> | void): RoleManageListPermissionList;
+export declare const PermissionListRoleManageList: (new (init: ModelInit<PermissionListRoleManageList>) => PermissionListRoleManageList) & {
+  copyOf(source: PermissionListRoleManageList, mutator: (draft: MutableModel<PermissionListRoleManageList>) => MutableModel<PermissionListRoleManageList> | void): PermissionListRoleManageList;
 }
 
 type EagerBusinessUserListFreeNumberList = {
