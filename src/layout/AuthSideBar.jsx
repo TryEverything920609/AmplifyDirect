@@ -10,47 +10,67 @@ import {
   PhoneTwoTone,
   UserOutlined,
   IdcardTwoTone,
+  ControlOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { DataStore } from "aws-amplify";
+import {
+  RoleManageList,
+  PermissionList,
+  PermissionListRoleManageList,
+} from "../models";
+import AuthContext from "../context/AuthContext";
 import logo from "../asset/images/directdial.png";
 
 const AuthSideBar = ({ color }) => {
-  const [collapsed, setCollapsed] = useState(false);
+  const { role, setRole } = useContext(AuthContext);
+  const [permissions, setPermissions] = useState([]);
+  const [sidebar, setSidebar] = useState([]);
   const { pathname } = useLocation();
+  const ICONS = {
+    DashboardTwoTone: <DashboardTwoTone />,
+    PhoneTwoTone: <PhoneTwoTone />,
+    UserOutlined: <UserOutlined />,
+    IdcardTwoTone: <IdcardTwoTone />,
+    TbBuildingEstate: <TbBuildingEstate />,
+    MdOutlineSms: <MdOutlineSms />,
+    FaRegMoneyBillAlt: <FaRegMoneyBillAlt />,
+    LuPhoneCall: <LuPhoneCall />,
+    IoSettingsOutline: <IoSettingsOutline />,
+  };
 
-  const ADMIN = [
-    {
-      key: 1,
-      icon: <DashboardTwoTone />,
-      to: "/dashboard",
-      label: "Dashboard",
-    },
-    {
-      key: 2,
-      icon: <PhoneTwoTone />,
-      to: "/tollfreenumber",
-      label: "Toll FreeNumber",
-    },
-    { key: 3, icon: <TbBuildingEstate />, to: "/states", label: "States" },
-    {
-      key: 4,
-      icon: <UserOutlined />,
-      to: "/businessuser",
-      label: "Business User",
-    },
-    { key: 5, icon: <MdOutlineSms />, to: "/sms", label: "SMS Log" },
-    { key: 6, icon: <LuPhoneCall />, to: "/call", label: "Call Log" },
-    { key: 7, icon: <FaRegMoneyBillAlt />, to: "/billing", label: "Billing" },
-    { key: 8, icon: <IoSettingsOutline />, to: "/setting", label: "Setting" },
-    {
-      key: 9,
-      icon: <IdcardTwoTone />,
-      to: "/userrole",
-      label: "UserRole",
-    },
-  ];
-  const User = [];
-  const SuperVisor = [];
+  useEffect(() => {
+    const fetchData = async () => {
+      const roleUser = await DataStore.query(RoleManageList, (c) =>
+        c.RoleName.eq(role)
+      );
+      const table = await DataStore.query(PermissionListRoleManageList, (c) =>
+        c.roleManageListId.eq(roleUser[0].id)
+      );
+      setPermissions([]);
+      table.map(async (item) => {
+        const permission = await DataStore.query(PermissionList, (c) =>
+          c.id.eq(item.permissionListId)
+        );
+        setPermissions((prev) => [...prev, permission]);
+      });
+      const side = [];
+      permissions.map((item) => {
+        side.push({
+          label: item[0].label,
+          key: item[0].key,
+          icon: ICONS[item[0].icon],
+          to: item[0].to,
+        });
+      });
+
+      console.log("Sidebar1 =>>>>>>", side);
+      const sortside = side.sort((a, b) => a.key - b.key);
+      setSidebar(sortside);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -75,7 +95,7 @@ const AuthSideBar = ({ color }) => {
       </div>
       <hr />
       <Menu theme="light" mode="inline">
-        {ADMIN.map((item) => (
+        {sidebar.map((item) => (
           <Menu.Item key={item.key}>
             <NavLink to={item.to}>
               <span
