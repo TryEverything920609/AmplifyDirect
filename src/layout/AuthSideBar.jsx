@@ -47,56 +47,111 @@ const AuthSideBar = ({ color }) => {
     IoSettingsOutline: <IoSettingsOutline />,
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const user = await DataStore.query(RoleManageList, (c) =>
-        c.RoleName.eq(role)
-      );
-      setUserRole(user[0]);
-    };
+  const admin = [
+    {
+      key:1,
+      icon: <DashboardTwoTone />,
+      to: "/dashboard",
+      label: "Dashboard",
+    },
+    {
+      key:2,
+      icon: <PhoneTwoTone />,
+      to: "/tollfreenumber",
+      label: "Troll Free Number",
+    },
+    {
+      key:3,
+      icon: <TbBuildingEstate/>,
+      to: "/states",
+      label: "States",
+    },
+    {
+      key:4,
+      icon: <UserOutlined />,
+      to: "/businessuser",
+      label: "Business Users",
+    },
+    {
+      key:5,
+      icon: <MdOutlineSms />,
+      to: "/sms",
+      label: "SMS Log",
+    },
+    {
+      key:6,
+      icon: <LuPhoneCall />,
+      to: "/call",
+      label: "Call Log",
+    },
+    {
+      key:7,
+      icon: <FaRegMoneyBillAlt />,
+      to: "/billing",
+      label: "Billing",
+    },
+    {
+      key:8,
+      icon: <IoSettingsOutline />,
+      to: "/setting",
+      label: "Setting",
+    },
+    {
+      key:9,
+      icon: <IdcardTwoTone />,
+      to: "/userrole",
+      label: "User Role",
+    },
 
-    fetchData();
-  }, [role]);
+  ]
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const user = await DataStore.query(RoleManageList, (c) =>
+  //       c.RoleName.eq(role)
+  //     );
+  //     setUserRole(user[0]);
+  //   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const permissions = await DataStore.query(
-        PermissionListRoleManageList,
-        (c) => c.roleManageListId.eq(userRole.id)
-      );
-      setPermissions(permissions);
-    };
-    fetchData();
-  }, [userRole]);
+  //   fetchData();
+  // }, [role]);
 
-  useEffect(() => {
-    const fetchData = () => {
-      const side = [];
-      permissions.map(async (permission) => {
-        const item = await DataStore.query(PermissionList, (c) =>
-          c.id.eq(permission.permissionListId)
-        );
-        console.log("The Item", item);
-        side = side.concat(item);
-      });
-      return side;
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const permissions = await DataStore.query(
+  //       PermissionListRoleManageList,
+  //       (c) => c.roleManageListId.eq(userRole.id)
+  //     );
+  //     setPermissions(permissions);
+  //   };
+  //   fetchData();
+  // }, [userRole]);
 
-    const side = fetchData();
-    const sidebarItem = [];
-    side.map((item) => {
-      console.log("Item", item);
-      sidebarItem.push({
-        key: item.key,
-        icon: ICONS[item.icon],
-        to: item.to,
-        label: item.label,
-      });
-    });
-    const sortside = sidebarItem.sort((a, b) => a.key - b.key);
+  // useEffect(() => {
+  //   const fetchData = () => {
+  //     const side = [];
+  //     permissions.map(async (permission) => {
+  //       await DataStore.query(PermissionList, (c) =>
+  //         c.id.eq(permission.permissionListId)
+  //       ).then((item) => {console.log("item", item); side = side.concat(item);});
+  //     });
+  //     return side;
+  //   };
 
-    setSidebar(sortside);
-  }, [permissions]);
+  //   const side = fetchData();
+  //   const sidebarItem = [];
+  //   side.map((item) => {
+  //     console.log("Item", item);
+  //     sidebarItem.push({
+  //       key: item.key,
+  //       icon: ICONS[item.icon],
+  //       to: item.to,
+  //       label: item.label,
+  //     });
+  //   });
+  //   const sortside = sidebarItem.sort((a, b) => a.key - b.key);
+
+  //   setSidebar(sortside);
+  // }, [permissions]);
 
   return (
     <>
@@ -121,7 +176,7 @@ const AuthSideBar = ({ color }) => {
       </div>
       <hr />
       <Menu theme="light" mode="inline">
-        {sidebar.map((item) => (
+        {admin.map((item) => (
           <Menu.Item key={item.key}>
             <NavLink to={item.to}>
               <span
